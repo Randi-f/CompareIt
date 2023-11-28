@@ -1,0 +1,183 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+html {
+    height: 100%;
+}
+body {
+    height: 100%;
+}
+.container {
+    height: 100%;
+    background-image: linear-gradient(to right, #fbc2eb, #a6c1ee);
+}
+.login-wrapper {
+    background-color: #fff;
+    width: 358px;
+    height: 588px;
+    border-radius: 15px;
+    padding: 0 50px;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+.info-wrapper {
+    background-color: #fff;
+    width: 900px;
+    height: 700px;
+    border-radius: 15px;
+    padding: 0 50px;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+.header {
+    font-size: 38px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 200px;
+}
+.input-item {
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+    border: 0;
+    padding: 10px;
+    border-bottom: 1px solid rgb(128, 125, 125);
+    font-size: 15px;
+    outline: none;
+}
+.input-item:placeholder {
+    text-transform: uppercase;
+}
+.btn {
+    text-align: center;
+    padding: 10px;
+    width: 100%;
+    margin-top: 40px;
+    background-image: linear-gradient(to right, #a6c1ee, #fbc2eb);
+    color: #fff;
+}
+.msg {
+    text-align: center;
+    line-height: 88px;
+}
+a {
+    text-decoration-line: none;
+    color: #abc1ee;
+}
+
+.table-container {
+    max-height: 500px; /* 设置表格容器的最大高度 */
+    max-width: 900px; /* 设置表格容器的最大宽度 */
+    overflow-x: auto; /* 设置X轴方向上出现滚动条 */
+    overflow-y: auto; /* 设置Y轴方向上出现滚动条 */
+}
+
+table {
+    width: 100%; /* 表格宽度占据父容器的100% */
+    border-collapse: collapse; /* 合并表格边框 */
+}
+
+th, td {
+    border: 1px solid #ccc; /* 设置单元格边框样式 */
+    padding: 10px; /* 设置单元格内边距 */
+    text-align: left; /* 设置文本左对齐 */
+}
+
+/* author : https://blog.csdn.net/bhegi_seg/article/details/123394504 */
+
+.light {
+    position: relative;
+    padding: 25px 30px;
+    color: #03e9f4;
+    font-size: 24px;
+    text-transform: uppercase;
+    transition: 0.5s;
+    letter-spacing: 4px;
+    cursor: pointer;
+    overflow: hidden;
+  }
+  .light:hover {
+    background-color: #03e9f4;
+    color: #050801;
+    box-shadow: 0 0 5px #03e9f4,
+                0 0 25px #03e9f4,
+                0 0 50px #03e9f4,
+                0 0 200px #03e9f4;
+  }
+  .light div {
+    position: absolute;
+  }
+  .light div:nth-child(1){
+    width: 100%;
+    height: 2px;
+    top: 0;
+    left: -100%;
+    background: linear-gradient(to right,transparent,#03e9f4);
+    animation: animate1 1s linear infinite;
+  }
+  .light div:nth-child(2){
+    width: 2px;
+    height: 100%;
+    top: -100%;
+    right: 0;
+    background: linear-gradient(to bottom,transparent,#03e9f4);
+    animation: animate2 1s linear infinite;
+    animation-delay: 0.25s;
+  }
+  .light div:nth-child(3){
+    width: 100%;
+    height: 2px;
+    bottom: 0;
+    right: -100%;
+    background: linear-gradient(to left,transparent,#03e9f4);
+    animation: animate3 1s linear infinite;
+    animation-delay: 0.5s;
+  }
+  .light div:nth-child(4){
+    width: 2px;
+    height: 100%;
+    bottom: -100%;
+    left: 0;
+    background: linear-gradient(to top,transparent,#03e9f4);
+    animation: animate4 1s linear infinite;
+    animation-delay: 0.75s;
+  }
+  @keyframes animate1 {
+    0% {
+      left: -100%;
+    }
+    50%,100% {
+      left: 100%;
+    }
+  }
+  @keyframes animate2 {
+    0% {
+      top: -100%;
+    }
+    50%,100% {
+      top: 100%;
+    }
+  }
+  @keyframes animate3 {
+    0% {
+      right: -100%;
+    }
+    50%,100% {
+      right: 100%;
+    }
+  }
+  @keyframes animate4 {
+    0% {
+      bottom: -100%;
+    }
+    50%,100% {
+      bottom: 100%;
+    }
+  }
+  
+  

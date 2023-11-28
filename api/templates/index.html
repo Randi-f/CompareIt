@@ -1,0 +1,39 @@
+<!--
+ * @Author: shihan
+ * @Date: 2023-10-25 18:39:19
+ * @version: 1.0
+ * @description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='welcome.css') }}">
+    <!-- <style>
+        
+    </style> -->
+</head>
+<script>
+    alert("If you are under 18, you will be directed to the child page.\nOtherwise, you will be directed to the adult page.");
+</script>
+<body>
+    <div class="container">
+        <div class="login-wrapper">
+            <h2>Info</h2>
+            <div class="form-wrapper">
+                <form action="/submit" method="post">
+                    <label for="namefield">Name:</label>
+                    <input type="text" id="namefield" name="name" placeholder="name" class="input-item">
+                    <label for="agefield">Age:</label>
+                    <input type="number" id="agefield" name="age" placeholder="a number" class="input-item">
+                    <input type="submit" class="btn" value="Submit">
+                    
+                </form>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
