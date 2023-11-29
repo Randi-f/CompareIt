@@ -18,16 +18,12 @@ flask shell
 
 Once you are in the Flask shell you can add the data. Let's use the sample below (just type the code below into the terminal)
 from app import db, User
-# Add UserA
 user_a = User(username='UserA', email='userA@example.com', gender='Male', postcode='SW7 2AZ', bio="A's bio")
 db.session.add(user_a)
-# Add UserB
 user_b = User(username='UserB', email='userB@example.com', gender='Female', postcode='SW7 2AZ', bio="B's bio")
 db.session.add(user_b)
-# Add UserC
 user_c = User(username='UserC', email='userC@example.com', gender='Female', postcode='SW7 2AZ', bio="C's bio")
 db.session.add(user_c)
-# Commit the changes to the database
 db.session.commit()
 exit()
 
