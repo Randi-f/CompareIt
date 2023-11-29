@@ -1,39 +1,84 @@
 <!--
- * @Author: shihan
- * @Date: 2023-10-25 18:39:19
- * @version: 1.0
- * @description: 
+ * @Description: 
+ * @Version: 
+ * @Author: fsh
+ * @Date: 2023-02-21 22:27:11
+ * @LastEditTime: 2023-11-29 13:27:04
 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{{ url_for('static',filename='welcome.css') }}">
-    <!-- <style>
-        
-    </style> -->
+    <title>Konchok</title>
+    <!-- <link rel="stylesheet" type="text/css" href="css/style.css" /> -->
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            font-family: "楷体";
+        }
+        header{
+            background-image:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url(https://images.pexels.com/photos/1083822/pexels-photo-1083822.jpeg?cs=srgb&dl=pexels-lisa-1083822.jpg&fm=jpg);
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+        }
+    
+        ul{
+            float: right;
+            list-style-type: none;
+            margin: 15px;
+        }
+        ul li{
+            display: inline-block;
+        }
+    
+        ul li a{
+            text-decoration: none;
+            color: #fff;
+            padding: 5px 20px;
+            border: 1px solid transparent;
+            transition: .6s ease;
+            border-radius: 20px;
+        }
+    
+        ul li a:hover{
+            background-color: #fff;
+            color: #000;
+        }
+        ul li.active a{
+            background-color: #fff;
+            color: #000;
+        }
+        .title{
+            position: absolute;
+            top:50%;
+            left:50%;
+            transform: translate(-50%,-50%);
+        }
+        .title h1{
+            color: #fff;
+            font-size: 70px;
+            font-family: Century Gothic;
+        }
+    </style>
 </head>
-<script>
-    alert("If you are under 18, you will be directed to the child page.\nOtherwise, you will be directed to the adult page.");
-</script>
 <body>
-    <div class="container">
-        <div class="login-wrapper">
-            <h2>Info</h2>
-            <div class="form-wrapper">
-                <form action="/submit" method="post">
-                    <label for="namefield">Name:</label>
-                    <input type="text" id="namefield" name="name" placeholder="name" class="input-item">
-                    <label for="agefield">Age:</label>
-                    <input type="number" id="agefield" name="age" placeholder="a number" class="input-item">
-                    <input type="submit" class="btn" value="Submit">
-                    
-                </form>
-            </div>
-
+    <header>
+        <div class="main">
+            <ul>
+                <li class="active"><a href="#">HOMEPAGE</a></li>
+                <li><a href="/login" target="_blank">LOGIN</a></li>
+                <li><a href="/homepage" target="_blank">VIEW</a></li>
+                <li><a href="/homepage/showContactUs" target="_blank"><span style="color: crimson;">CONTACT</span>US</a></li>
+                
+            </ul>
         </div>
-    </div>
+        <div class="title">
+            <h1><span style="color: crimson;">My</span> dbHelper</h1>
+        </div>
+    </header>
 </body>
 </html>
