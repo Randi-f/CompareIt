@@ -3,7 +3,7 @@ from flask import Flask, render_template, jsonify, request
 from lxml import html
 import requests
 from flask import Flask, render_template, request
-import psycopg2 as db
+import psycopg as db
 import uuid
 
 # from flask_mail import Mail, Message
