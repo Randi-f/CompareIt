@@ -1,0 +1,12 @@
+name: Build
+on: [push]
+jobs:
+  print-greeting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print a greeting
+        env:
+          MY_VAR: This code is uploaded by
+          FIRST_NAME: Shihan
+        run: |
+            echo $MY_VAR $FIRST_NAME.
