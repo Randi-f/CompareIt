@@ -12,6 +12,7 @@ body {
     height: 100%;
     background-image: linear-gradient(to right, #fbc2eb, #a6c1ee);
 }
+
 .login-wrapper {
     background-color: #fff;
     width: 358px;
@@ -23,6 +24,19 @@ body {
     top: 50%;
     transform: translate(-50%, -50%);
 }
+
+.login-wrapper2 {
+  background-color: #fff;
+  width: 358px;
+  height: 758px;
+  border-radius: 15px;
+  padding: 0 50px;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .info-wrapper {
     background-color: #fff;
     width: 900px;
@@ -34,11 +48,17 @@ body {
     top: 50%;
     transform: translate(-50%, -50%);
 }
+
+.form-wrapper {
+  position: relative;
+  top: -60px;
+}
+
 .header {
     font-size: 38px;
     font-weight: bold;
     text-align: center;
-    line-height: 200px;
+    line-height: 200px; 
 }
 .input-item {
     display: block;
@@ -179,5 +199,28 @@ th, td {
       bottom: 100%;
     }
   }
-  
+
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    top: 50%; /* 50% from the top */
+    left: 50%; /* Centered horizontally */
+    transform: translate(-50%, -50%); /* Adjust for exact centering */
+    width: 60%; /* Modal width */
+    max-width: 400px; /* Maximum width */
+    background-color: white; /* Background color */
+    padding: 20px; /* Padding around the content */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Shadow for a bit of depth */
+    z-index: 10; /* Ensure it's on top */
+    border-radius: 5px; /* Rounded corners */
+  }
+
+  .close {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    font-size: 25px;
+    font-weight: bold;
+    cursor: pointer;
+}
   
