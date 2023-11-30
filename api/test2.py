@@ -6,18 +6,23 @@ description:
 '''
 import psycopg as db
 
-server_params = {'dbname': 'sf23',
-                 'host': 'db.doc.ic.ac.uk',
-                 'port': '5432',
-                 'user': 'sf23',
-                 'password': '3048=N35q4nEsm',
-                 'client_encoding':'utf-8'}
+def name(keyword):
+    server_params = {'dbname': 'sf23',
+                    'host': 'db.doc.ic.ac.uk',
+                    'port': '5432',
+                    'user': 'sf23',
+                    'password': '3048=N35q4nEsm',
+                    'client_encoding':'utf-8'}
 
-conn = db.connect(**server_params)
-curs = conn.cursor()
+    conn = db.connect(**server_params)
+    curs = conn.cursor()
 
-curs.execute('select * from user;')
-rec = curs.fetchone()
-print(rec)
+    gender = 'male'
+    keyword = 'a'+ ' '+ gender 
+    # male
+    sql_command = 'Insert a into my_user'
+    curs.execute(sql_command)
+    rec = curs.fetchone()
+    print(rec)
 
-conn.close()
+    conn.close()
