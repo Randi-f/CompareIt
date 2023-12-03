@@ -3,8 +3,8 @@ from flask import Flask, render_template, jsonify, request, session
 from lxml import html
 import requests
 import psycopg as db
-import uuid
 # import psycopg2 as db
+import uuid
 import hashlib
 from openpyxl import Workbook
 
@@ -397,6 +397,7 @@ def vipapi():
     # 保存数据到Excel文件
     workbook.save('商品.xlsx')
     print(min_price_row[0])
+    return min_price_row
 
     '''
                         <th>title</th>
