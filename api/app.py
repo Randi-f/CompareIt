@@ -265,9 +265,9 @@ def send_request(keyword):
     # print(html_doc)
     # 打开文件，如果文件不存在则创建，如果文件已存在则覆盖其内容
     #open the file and create one if it does not exist. if it exists, overwrite it
-    with open('test.html', 'w') as file:
+    # with open('test.html', 'w') as file:
         # 写入数据到文件 write the data into the file
-        file.write(html_doc)
+        # file.write(html_doc)
         # 文件写入完成后，自动关闭文件，不需要再调用 file.close()
         # after the file is written, it is auto closed
 
@@ -395,7 +395,7 @@ def vipapi():
             sheet.append(row)
             
     # 保存数据到Excel文件
-    workbook.save('商品.xlsx')
+    # workbook.save('商品.xlsx')
     print(min_price_row[0])
     return min_price_row
 
