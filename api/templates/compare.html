@@ -3,16 +3,20 @@
  * @Version: 
  * @Author: fsh
  * @Date: 2023-04-13 18:43:45
+
  * @LastEditTime: 2023-12-03 10:56:06
+
 -->
 <!DOCTYPE HTML>
 <html>
 <head>
 
+
 <title>Compare It !</title>
 <meta charset="utf-8" />
 <link rel="stylesheet" href="{{ url_for('static',filename='welcome.css') }}">
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+
 
 <style>
 table{width:600px; 
@@ -23,9 +27,11 @@ td,th{border:1px solid #ccc}
 body {
   font-family: Arial;
 }
+
 * {
   box-sizing: border-box;
 }
+
 form.example input[type=text] {
   padding: 10px;
   font-size: 17px;
@@ -34,6 +40,7 @@ form.example input[type=text] {
   width: 80%;
   background: #f1f1f1;
 }
+
 form.example button {
   float: left;
   width: 20%;
@@ -45,9 +52,11 @@ form.example button {
   border-left: none;
   cursor: pointer;
 }
+
 form.example button:hover {
   background: #0b7dda;
 }
+
 form.example::after {
   content: "";
   clear: both;
@@ -206,7 +215,6 @@ $.ajax({
                 //json数组中第1个人的每个属性
                 var selectTab=document.getElementById("columnName");
                 selectTab.options.length = 0;
-                
                 var count=0;
                 for(var key in json[0]){
                     selectTab.options.add(new Option(key, count));
