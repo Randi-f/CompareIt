@@ -3,15 +3,21 @@
  * @Version: 
  * @Author: fsh
  * @Date: 2023-04-13 18:43:45
- * @LastEditTime: 2023-11-29 13:49:07
+
+ * @LastEditTime: 2023-12-03 10:56:06
+
 -->
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>利用json数据动态创建表格</title>
+
+
+<title>Compare It !</title>
 <meta charset="utf-8" />
 <link rel="stylesheet" href="{{ url_for('static',filename='welcome.css') }}">
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+
+
 <style>
 table{width:600px; 
 border-collapse:collapse; 
@@ -105,9 +111,10 @@ form.example::after {
 
 
 <div class="container">
-    <div class="login-wrapper">
+    <div class="info-wrapper">
         <div class="header">Compare It</div>
         <div class="form-wrapper">
+            <button onclick="window.location.href='/profile'"> profile </button>
             <form action="/keywordsubmit" method="post">               
                 keyword:<input type="text" name="keyword" id = "keyword" placeholder="keyword" class="input-item">
                 <button type="submit">
@@ -115,6 +122,35 @@ form.example::after {
                 </button>
                 <!-- <input type="submit" class="myInput" value="Submit"> -->
             </form>
+
+        </div>
+        <div class="table-container">
+            <table border="1">
+                <tr>
+                    <th>title</th>
+                    <th>link</th>
+                    <th>price</th>
+                    <th>manufacturer</th>
+                    <th>other</th>
+                </tr>
+                
+                <tr>
+                    <td>{{ result1['title'] }}</td>
+                    <td>{{ result1['link'] }}</td>
+                    <td>{{ result1['price'] }}</td>
+                    <td>{{ result1['manufacturer'] }}</td>
+                    <td>JD</td>
+                </tr>
+                <tr>
+                    <td>{{ result2[0] }}</td>
+                    <td>{{ result2[5] }}</td>
+                    <td>{{ result2[2] }}</td>
+                    <td>{{ result2[1] }}</td>
+                    <td>WPH</td>
+                </tr>
+
+                
+            </table>
         </div>
 
     </div>
@@ -167,8 +203,6 @@ $.ajax({
 		    url: "{:url('/compare')}",
 		    data: {'none':"none"},
             success: function(d) {
-                // alert(d);
-                // var json = json_decode(d);
                 var json = JSON.parse(d);
                 var table=document.createElement("table");
                 table.id="myTable";
@@ -181,11 +215,7 @@ $.ajax({
                 //json数组中第1个人的每个属性
                 var selectTab=document.getElementById("columnName");
                 selectTab.options.length = 0;
-                // var data = ["名称","城市"];
-    // for(x=0;x<data.length;x++){
-    //     selectTab.options.add(new Option(data[x], x));
-    // }
-    var count=0;
+                var count=0;
                 for(var key in json[0]){
                     selectTab.options.add(new Option(key, count));
                     count++;
