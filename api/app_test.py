@@ -1,6 +1,6 @@
 import unittest
 from flask import Flask
-import app  # Assuming your app is defined in a file named app.py
+import app
 
 
 class TestApp(unittest.TestCase):
@@ -13,7 +13,7 @@ class TestApp(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(
             b"Login", response.data
-        )  # Ensure the word 'Login' is present in the response
+        )
 
 
 if __name__ == "__main__":
