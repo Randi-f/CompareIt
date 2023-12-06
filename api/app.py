@@ -3,6 +3,9 @@ from flask import Flask, render_template, jsonify, request, session
 from lxml import html
 import requests
 import psycopg2 as db
+import os
+
+# import psycopg2 as db
 import uuid
 import hashlib
 from openpyxl import Workbook
@@ -49,10 +52,10 @@ def keywordsubmit():
     products_list = send_request(keyword)
     # if(products_list):
 
-    result2 = vipapi()
+    result2 = vipapi(keyword)
     # print(products_list[0])
     return render_template("compare.html", result1=products_list[0], result2=result2)
-    return products_list[0]
+    # return products_list[0]
 
 
 @app.route("/login")
@@ -324,7 +327,14 @@ def send_request(keyword):
     return products_list
 
 
-def vipapi():
+def vipapi(key_word):
+
+    # 指定新文件夹路径
+    folder_path = '../vip_res'
+
+    # 创建新文件夹
+    os.makedirs(folder_path, exist_ok=True) 
+
     headers = {
         "Referer": "https://category.vip.com/",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)",
@@ -344,7 +354,7 @@ def vipapi():
         "mars_cid": "1689245318776_e2b4a7b51f99b3dd6a4e6d356e364148",
         "wap_consumer": "a",
         "standby_id": "nature",
-        "keyword": "耐克运动鞋",
+        "keyword": key_word,
         "lv3CatIds": "",
         "lv2CatIds": "",
         "lv1CatIds": "",
@@ -364,7 +374,7 @@ def vipapi():
     response = requests.get(url=url, params=data, headers=headers)
     products = [i["pid"] for i in response.json()["data"]["products"]]
 
-    # 打开文件并创建 CSV 写入器
+    # 打开文件并创建 excel 写入器
     # 创建一个工作簿和工作表
     workbook = Workbook()
     sheet = workbook.active
@@ -416,7 +426,7 @@ def vipapi():
             sheet.append(row)
 
     # 保存数据到Excel文件
-    # workbook.save('商品.xlsx')
+    workbook.save('../vip_res/商品.xlsx')
     print(min_price_row[0])
     return min_price_row
 
