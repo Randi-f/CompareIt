@@ -11,9 +11,7 @@ class TestApp(unittest.TestCase):
     def test_open_login_page(self):
         response = self.app.get("/login")
         self.assertEqual(response.status_code, 200)
-        self.assertIn(
-            b"Login", response.data
-        )
+        self.assertIn(b"Login", response.data)
 
 
 if __name__ == "__main__":

@@ -10,16 +10,14 @@ import uuid
 import hashlib
 from openpyxl import Workbook
 from dotenv import load_dotenv
-import os
-import string 
-import smtplib 
+import string
+import smtplib
 import random
 
 app = Flask(__name__)
 app.secret_key = "your_unique_and_secret_key"
 
 
-# 连接 MySQL 数据库
 def get_db_connection():
     # server_params = {
     #     'dbname': 'nl1023',
@@ -63,22 +61,17 @@ def login():
     return render_template("login.html")
 
 
-# 处理登录请求
 @app.route("/login", methods=["POST"])
 def submit():
-    data = request.json  # 获取 JSON 数据
+    data = request.json
 
-    # 获取用户名和密码
     username = data.get("username")
     password = data.get("password")
 
-    # 连接数据库
     conn = get_db_connection()
 
-    # 创建游标对象
     cursor = conn.cursor()
 
-    # 查询数据库中是否存在该用户
     query = "SELECT * FROM my_user WHERE user_id = %s"
     cursor.execute(query, (username,))
     user = cursor.fetchone()
@@ -86,41 +79,57 @@ def submit():
     conn.close()
     # if user and hashlib.md5(password.encode()).hexdigest()==user[6]:
     if user and password == user[6]:
-        if email_verified == "t":
+        if user[7] == "t":
             session["user"] = username
             return jsonify({"message": "Login successful"})
             # return render_template("compare.html", result1={})
         else:
             return jsonify({"message": "Email is not verified"}), 401
     else:
-        return jsonify({"message": "The user does not exist or the password is incorrect"}), 401
+        return (
+            jsonify(
+                {"message": "The user does not exist or the password is incorrect"}
+            ),
+            401,
+        )
 
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route("/register", methods=["GET", "POST"])
 def register():
-    if request.method == 'POST':
-        first_name = request.form['first_name']
-        last_name = request.form['last_name']
-        full_name = first_name + ' ' + last_name
-        gender = request.form['gender']
-        email = request.form['email']
-        dob = request.form['dob']
-        postcode = request.form['postcode']
-        password = request.form['password']
+    if request.method == "POST":
+        first_name = request.form["first_name"]
+        last_name = request.form["last_name"]
+        full_name = first_name + " " + last_name
+        gender = request.form["gender"]
+        email = request.form["email"]
+        dob = request.form["dob"]
+        postcode = request.form["postcode"]
+        password = request.form["password"]
 
         user_id_initials = (first_name[0] + last_name[0]).upper()
         user_id_dob_part = dob[-2:]  # Last two digits of the year
         user_id_postcode_part = postcode[-3:]  # Last three digits of the postcode
         user_id = user_id_initials + user_id_dob_part + user_id_postcode_part
-        
-        verification_token = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
 
-        sqlcommand = '''
+        verification_token = "".join(
+            random.choices(string.ascii_letters + string.digits, k=32)
+        )
+
+        sqlcommand = """
             INSERT INTO my_user (user_id, name, gender, email, dob, postcode, password, email_verified, verification_token) 
             VALUES (%s, %s, %s, %s, %s, %s, %s, False, %s)
-        '''
+        """
 
-        values = (user_id, full_name, gender, email, dob, postcode, password, verification_token)
+        values = (
+            user_id,
+            full_name,
+            gender,
+            email,
+            dob,
+            postcode,
+            password,
+            verification_token,
+        )
 
         server_params = {
             "dbname": "sf23",
@@ -136,26 +145,32 @@ def register():
             curs = conn.cursor()
             curs.execute(sqlcommand, values)
             conn.commit()  # Commit to save changes
-            send_verification_email(email, verification_token, user_id) ##
+            send_verification_email(email, verification_token, user_id)
             message = "Registration successful"
         except Exception as e:
             print(f"An error occurred: {e}")  # Log the error
             message = "Registration failed due to a technical issue."
         finally:
-            if 'curs' in locals():
+            if "curs" in locals():
                 curs.close()
-            if 'conn' in locals():
+            if "conn" in locals():
                 conn.close()
 
-        return render_template("registration_result.html", message="Please check your email to confirm your registration")
+        return render_template(
+            "registration_result.html",
+            message="Please check your email to confirm your registration",
+        )
     else:
         return render_template("register.html")
 
-@app.route('/verify_email/<verification_token>')
+
+@app.route("/verify_email/<verification_token>")
 def verify_email(verification_token):
     # You should implement logic here to check the verification token in your database
     # If the token is valid, update the 'email_verified' column for the user
-    sqlcommand = 'UPDATE my_user SET email_verified = True WHERE verification_token = %s'
+    sqlcommand = (
+        "UPDATE my_user SET email_verified = True WHERE verification_token = %s"
+    )
     print(sqlcommand)
 
     server_params = {
@@ -177,12 +192,13 @@ def verify_email(verification_token):
         print(f"An error occurred: {e}")  # Log the error
         message = "Registration failed due to a technical issue."
     finally:
-        if 'curs' in locals():
+        if "curs" in locals():
             curs.close()
-        if 'conn' in locals():
+        if "conn" in locals():
             conn.close()
     # For now, let's assume it's successful
     return render_template("email_verified.html")
+
 
 def send_verification_email(receiver_mail, verification_token, user_id):
     # Retrieve email configuration from environment variables
@@ -190,11 +206,15 @@ def send_verification_email(receiver_mail, verification_token, user_id):
     password = os.getenv("PASSWORD")
 
     # Construct the email message
-    subject = 'Please verify your email'
-    verification_link = f'http://127.0.0.1:5000/verify_email/{verification_token}' #check email!!
-    message = (f'Welcome to CompareIt! \n\n Thank you for signing up! Your user id is: {user_id}.'
-     f'Your user id will be used to login in along with your chosen password.\n\n'
-     f'Please click on the following link to verify your email:\n\n{verification_link}')
+    subject = "Please verify your email"
+    verification_link = (
+        f"http://127.0.0.1:5000/verify_email/{verification_token}"  # check email!!
+    )
+    message = (
+        f"Welcome to CompareIt! \n\n Thank you for signing up! Your user id is: {user_id}."
+        f"Your user id will be used to login in along with your chosen password.\n\n"
+        f"Please click on the following link to verify your email:\n\n{verification_link}"
+    )
     text = f"Subject: {subject}\n\n{message}"
 
     # Send the email
@@ -202,10 +222,11 @@ def send_verification_email(receiver_mail, verification_token, user_id):
     server.starttls()
     server.login(email, password)
     server.sendmail(email, receiver_mail, text)
-    #server.sendmail(email, receiver_mail, text)
+    # server.sendmail(email, receiver_mail, text)
     server.quit()
 
     print(f"Verification email has been sent to {receiver_mail}")
+
 
 # Profile route
 @app.route("/profile")
@@ -272,47 +293,33 @@ def compare():
 def send_request(keyword):
     products_list = []
     """ 爬取京东的商品数据 """
-    # url = 'https://search.jd.com/Search?keyword={0}&enc=utf-8'.format(word)
+
     url = "https://search.jd.com/Search?keyword=" + keyword + "&enc=utf-8"
 
-    # get html file
     respons = requests.get(url)
     respons.encoding = "utf-8"
     html_doc = respons.text
 
-    # print(html_doc)
-    # 打开文件，如果文件不存在则创建，如果文件已存在则覆盖其内容
-    # open the file and create one if it does not exist. if it exists, overwrite it
-    # with open('test.html', 'w') as file:
-    # 写入数据到文件 write the data into the file
-    # file.write(html_doc)
-    # 文件写入完成后，自动关闭文件，不需要再调用 file.close()
-    # after the file is written, it is auto closed
-
-    # 获取xpath对象 get element fot xpath
     selector = html.fromstring(html_doc)
 
-    # 找到列表的集合, find the set of the list
     ul_list = selector.xpath('//div[@id="J_goodsList"]/ul/li')
 
-    # 解析对应的标题,价格,链接,店铺 analyze the title, price, market
     for li in ul_list:
-        # 标题 title
         title = li.xpath(
             'div/div[@class="p-name p-name-type-2"]/a/em/text() | '
             'div/div[@class="p-name"]/a/@title'
         )
-        # 购买链接 link to buy it
+
         link = li.xpath(
             'div/div[@class="p-name p-name-type-2"]/a/@href | '
             'div/div[@class="p-name"]/a/@href'
         )
-        # 价格 price
+
         price = li.xpath(
             'div/div[@class="p-price"]/strong/i/text() | '
             'div/div[@class="p-price"]/strong/i/text()'
         )
-        # 店铺 manufacturer
+
         store = li.xpath(
             'div/div[@class="p-shop"]//a/text() | ' 'div//a[@class="curr-shop"]/@title'
         )
@@ -330,12 +337,9 @@ def send_request(keyword):
 
 
 def vipapi(key_word):
+    folder_path = "../vip_res"
 
-    # 指定新文件夹路径
-    folder_path = '../vip_res'
-
-    # 创建新文件夹
-    os.makedirs(folder_path, exist_ok=True) 
+    os.makedirs(folder_path, exist_ok=True)
 
     headers = {
         "Referer": "https://category.vip.com/",
@@ -376,12 +380,9 @@ def vipapi(key_word):
     response = requests.get(url=url, params=data, headers=headers)
     products = [i["pid"] for i in response.json()["data"]["products"]]
 
-    # 打开文件并创建 excel 写入器
-    # 创建一个工作簿和工作表
     workbook = Workbook()
     sheet = workbook.active
 
-    # 设置表头
     header = ["标题", "品牌", "售价", "图片", "商品信息", "详情页"]
     sheet.append(header)
 
@@ -392,7 +393,6 @@ def vipapi(key_word):
             "https://mapi.vip.com/vips-mobile/rest/shopping/pc/product/module/list/v2"
         )
         params = {
-            # 'callback': 'getMerchandiseDroplets2',
             "app_name": "shop_pc",
             "app_version": "4.0",
             "warehouse": "VIP_HZ",
@@ -427,8 +427,7 @@ def vipapi(key_word):
                 min_price_row = row
             sheet.append(row)
 
-    # 保存数据到Excel文件
-    workbook.save('../vip_res/商品.xlsx')
+    workbook.save("../vip_res/商品.xlsx")
     print(min_price_row[0])
     return min_price_row
 
