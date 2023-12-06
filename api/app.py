@@ -83,7 +83,6 @@ def submit():
         # Print or log the relevant information
         print(password, user[6])
 
-        # Continue with your authentication logic
         if password == user[6]:
             if user[7] is True:
                 session["user"] = username
