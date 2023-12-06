@@ -75,23 +75,30 @@ def submit():
     query = "SELECT * FROM my_user WHERE user_id = %s"
     cursor.execute(query, (username,))
     user = cursor.fetchone()
-    print(password, user[6])
+
     conn.close()
-    # if user and hashlib.md5(password.encode()).hexdigest()==user[6]:
-    if user and password == user[6]:
-        if user[7] == "t":
-            session["user"] = username
-            return jsonify({"message": "Login successful"})
-            # return render_template("compare.html", result1={})
+
+    # Check if user is not None before accessing its elements
+    if user is not None:
+        # Print or log the relevant information
+        print(password, user[6])
+
+        # Continue with your authentication logic
+        if password == user[6]:
+            if user[7] is True:
+                session["user"] = username
+                return jsonify({"message": "Login successful"})
+            else:
+                return jsonify({"message": "Email is not verified"}), 401
         else:
-            return jsonify({"message": "Email is not verified"}), 401
+            return (
+                jsonify(
+                    {"message": "The password is incorrect"}
+                ),
+                401,
+            )
     else:
-        return (
-            jsonify(
-                {"message": "The user does not exist or the password is incorrect"}
-            ),
-            401,
-        )
+        return jsonify({"message": "User not found"}), 401
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -256,7 +263,7 @@ def profile():
             # curs = conn.cursor()
 
             # Perform the profile query to fetch user data based on the username
-            curs.execute("SELECT * FROM my_user WHERE name = %s", (username,))
+            curs.execute("SELECT * FROM my_user WHERE user_id = %s", (username,))
             user = curs.fetchone()
 
             # Check if the user is found
