@@ -79,19 +79,21 @@ def submit():
     cursor = conn.cursor()
 
     # 查询数据库中是否存在该用户
-    query = "SELECT * FROM my_user WHERE name = %s"
+    query = "SELECT * FROM my_user WHERE user_id = %s"
     cursor.execute(query, (username,))
     user = cursor.fetchone()
     print(password, user[6])
     conn.close()
     # if user and hashlib.md5(password.encode()).hexdigest()==user[6]:
     if user and password == user[6]:
-        session["user"] = username
-        return jsonify({"message": "Login successful"})
-        # return render_template("compare.html", result1={})
+        if email_verified == "t":
+            session["user"] = username
+            return jsonify({"message": "Login successful"})
+            # return render_template("compare.html", result1={})
+        else:
+            return jsonify({"message": "Email is not verified"}), 401
     else:
-        return jsonify({"message": "Invalid credentials"}), 401
-
+        return jsonify({"message": "The user does not exist or the password is incorrect"}), 401
 
 
 @app.route('/register', methods=['GET', 'POST'])
