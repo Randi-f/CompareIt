@@ -65,7 +65,7 @@ def login():
 def submit():
     data = request.json
 
-    username = data.get("username")
+    user_id = data.get("user_id")
     password = data.get("password")
 
     conn = get_db_connection()
@@ -73,7 +73,7 @@ def submit():
     cursor = conn.cursor()
 
     query = "SELECT * FROM my_user WHERE user_id = %s"
-    cursor.execute(query, (username,))
+    cursor.execute(query, (user_id,))
     user = cursor.fetchone()
 
     conn.close()
@@ -85,7 +85,7 @@ def submit():
 
         if password == user[6]:
             if user[7] is True:
-                session["user"] = username
+                session["user"] = user_id
                 return jsonify({"message": "Login successful"})
             else:
                 return jsonify({"message": "Email is not verified"}), 401
@@ -272,6 +272,7 @@ def profile():
                     "username": user[1],
                     "email": user[3],
                     "gender": user[2],
+                    "dob": user[4],
                     "postcode": user[5],
                     # Add other properties as needed
                 }
