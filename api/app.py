@@ -2,18 +2,18 @@ import math
 from flask import Flask, render_template, jsonify, request, session
 from lxml import html
 import requests
-import psycopg2 as db
+import psycopg as db
 import os
-
 # import psycopg2 as db
 import uuid
 import hashlib
 from openpyxl import Workbook
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import string
 import smtplib
 import random
 
+from Controller.JD import *;
 app = Flask(__name__)
 app.secret_key = "your_unique_and_secret_key"
 
@@ -41,7 +41,9 @@ def get_db_connection():
 # homepage route for the app
 @app.route("/")
 def hello_world():
-    return render_template("index.html")
+    # return render_template("index.html")
+    return render_template("compare.html", result1={}, result2={})
+
 
 
 @app.route("/keywordsubmit", methods=["POST"])
@@ -305,50 +307,7 @@ def compare():
     return render_template("compare.html", result1={}, result2={})
 
 
-def send_request(keyword):
-    products_list = []
-    """ 爬取京东的商品数据 """
 
-    url = "https://search.jd.com/Search?keyword=" + keyword + "&enc=utf-8"
-
-    respons = requests.get(url)
-    respons.encoding = "utf-8"
-    html_doc = respons.text
-
-    selector = html.fromstring(html_doc)
-
-    ul_list = selector.xpath('//div[@id="J_goodsList"]/ul/li')
-
-    for li in ul_list:
-        title = li.xpath(
-            'div/div[@class="p-name p-name-type-2"]/a/em/text() | '
-            'div/div[@class="p-name"]/a/@title'
-        )
-
-        link = li.xpath(
-            'div/div[@class="p-name p-name-type-2"]/a/@href | '
-            'div/div[@class="p-name"]/a/@href'
-        )
-
-        price = li.xpath(
-            'div/div[@class="p-price"]/strong/i/text() | '
-            'div/div[@class="p-price"]/strong/i/text()'
-        )
-
-        store = li.xpath(
-            'div/div[@class="p-shop"]//a/text() | ' 'div//a[@class="curr-shop"]/@title'
-        )
-        products_list.append(
-            {
-                "title": title[0],
-                "price": price[0],
-                "link": "https:" + link[0],
-                "store": store[0],
-                "referer": "JD",
-            }
-        )
-
-    return products_list
 
 
 def vipapi(key_word):
