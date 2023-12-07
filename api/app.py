@@ -3,7 +3,7 @@ from flask import Flask, render_template, jsonify, request, session
 from lxml import html
 import requests
 import psycopg as db
-
+import configparser
 # import psycopg2 as db
 import uuid
 import hashlib
@@ -113,10 +113,30 @@ def register():
         postcode = request.form["postcode"]
         password = request.form["password"]
 
-        user_id_initials = (first_name[0] + last_name[0]).upper()
-        user_id_dob_part = dob[-2:]  # Last two digits of the year
-        user_id_postcode_part = postcode[-3:]  # Last three digits of the postcode
-        user_id = user_id_initials + user_id_dob_part + user_id_postcode_part
+        config=configparser.ConfigParser()
+        config.read('dbtool.ini')
+        # generate unique user_id
+        sqlcommand = "SELECT COUNT(*) AS row_count FROM my_user WHERE name = '" + first_name + " "+ last_name + "';"
+        try:
+            conn = db.connect(**config['connection'])
+            curs = conn.cursor()
+            curs.execute(sqlcommand)
+            ret = curs.fetchone()
+            # print(ret[0])
+        except Exception as e:
+            print(f"An error occurred: {e}")  # Log the error
+        finally:
+            if 'curs' in locals():
+                curs.close()
+            if 'conn' in locals():
+                conn.close()
+        
+        # user_id_initials = (first_name[0] + last_name[0]).upper() + (ret[0]+1)
+        user_id = (first_name[0] + last_name[0]).upper() + (str)(ret[0]+1)
+        print(user_id)
+        # user_id_dob_part = dob[-2:]  # Last two digits of the year
+        # user_id_postcode_part = postcode[-3:]  # Last three digits of the postcode
+        # user_id = user_id_initials + user_id_dob_part + user_id_postcode_part
 
         verification_token = "".join(
             random.choices(string.ascii_letters + string.digits, k=32)
@@ -148,17 +168,12 @@ def register():
             verification_token,
         )
 
-        server_params = {
-            "dbname": "sf23",
-            "host": "db.doc.ic.ac.uk",
-            "port": "5432",
-            "user": "sf23",
-            "password": "3048=N35q4nEsm",
-            "client_encoding": "utf-8",
-        }
 
+        
+
+       
         try:
-            conn = db.connect(**server_params)
+            conn = db.connect(**config['connection'])
             curs = conn.cursor()
             curs.execute(sqlcommand, values)
             conn.commit()  # Commit to save changes
