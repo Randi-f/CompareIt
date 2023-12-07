@@ -39,7 +39,7 @@ from lxml import html
 #     print(f"Error: {response.status_code} - {response.text}")
 
 
-def send_request(keyword):
+def send_request_JD(keyword):
     # print("sending")
     products_list = []
     """ 爬取京东的商品数据 """
