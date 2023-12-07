@@ -91,16 +91,13 @@ def submit():
                 return jsonify({"message": "Email is not verified"}), 401
         else:
             return (
-                jsonify(
-                    {"message": "The password is incorrect"}
-                ),
+                jsonify({"message": "The password is incorrect"}),
                 401,
             )
     else:
         return jsonify({"message": "User not found"}), 401
 
 
-@app.route("/register", methods=["GET", "POST"])
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -136,10 +133,8 @@ def register():
         )
 
         sqlcommand = """
-        sqlcommand = """
             INSERT INTO my_user (user_id, name, gender, email, dob, postcode, password, email_verified, verification_token) 
             VALUES (%s, %s, %s, %s, %s, %s, %s, False, %s)
-        """
         """
 
         values = (
@@ -184,9 +179,7 @@ def register():
             message = "Registration failed due to a technical issue."
         finally:
             if "curs" in locals():
-            if "curs" in locals():
                 curs.close()
-            if "conn" in locals():
             if "conn" in locals():
                 conn.close()
 
@@ -197,8 +190,6 @@ def register():
     else:
         return render_template("register.html")
 
-
-@app.route("/verify_email/<verification_token>")
 
 @app.route("/verify_email/<verification_token>")
 def verify_email(verification_token):
@@ -232,14 +223,11 @@ def verify_email(verification_token):
         message = "Registration failed due to a technical issue."
     finally:
         if "curs" in locals():
-        if "curs" in locals():
             curs.close()
-        if "conn" in locals():
         if "conn" in locals():
             conn.close()
     # For now, let's assume it's successful
     return render_template("email_verified.html")
-
 
 
 def send_verification_email(receiver_mail, verification_token, user_id):
@@ -276,7 +264,6 @@ def send_verification_email(receiver_mail, verification_token, user_id):
     server.quit()
 
     print(f"Verification email has been sent to {receiver_mail}")
-
 
 
 # Profile route
