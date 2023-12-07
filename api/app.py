@@ -219,8 +219,10 @@ def verify_email(verification_token):
 
 def send_verification_email(receiver_mail, verification_token, user_id):
     # Retrieve email configuration from environment variables
-    email = os.getenv("EMAIL")
-    password = os.getenv("PASSWORD")
+    # email = os.getenv("EMAIL")
+    email = "price.project23@gmail.com"
+    # password = os.getenv("PASSWORD")
+    password = "dkto zovm nnwx csqo"
 
     # Construct the email message
     subject = "Please verify your email"
