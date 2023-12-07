@@ -13,8 +13,9 @@ import string
 import smtplib
 import random
 
-from Controller.website1_JD import *;
-from Controller.website2_WPH import *;
+from Controller.website1_JD import send_request_JD
+from Controller.website2_WPH import send_request_WPH
+
 app = Flask(__name__)
 app.secret_key = "your_unique_and_secret_key"
 
@@ -44,7 +45,6 @@ def get_db_connection():
 def hello_world():
     return render_template("index.html")
     # return render_template("compare.html", result1={}, result2={})
-
 
 
 @app.route("/keywordsubmit", methods=["POST"])
@@ -308,9 +308,3 @@ def profile():
 @app.route("/compare")
 def compare():
     return render_template("compare.html", result1={}, result2={})
-
-
-
-
-
-
