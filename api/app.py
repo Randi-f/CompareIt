@@ -220,7 +220,7 @@ def send_verification_email(receiver_mail, verification_token, user_id):
     password = os.getenv("PASSWORD")
 
     # Construct the email message
-    subject = "Please verify your email"
+    subject = "Please verify your email."
     verification_link = (
         f"http://127.0.0.1:5000/verify_email/{verification_token}"  # check email!!
     )
