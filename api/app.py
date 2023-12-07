@@ -10,6 +10,10 @@ import uuid
 import hashlib
 from openpyxl import Workbook
 from dotenv import load_dotenv
+<<<<<<< Updated upstream
+=======
+import os
+>>>>>>> Stashed changes
 import string
 import smtplib
 import random
@@ -134,6 +138,7 @@ def register():
             password,
             verification_token,
         )
+<<<<<<< Updated upstream
         values = (
             user_id,
             full_name,
@@ -144,6 +149,8 @@ def register():
             password,
             verification_token,
         )
+=======
+>>>>>>> Stashed changes
 
         server_params = {
             "dbname": "sf23",
@@ -159,7 +166,11 @@ def register():
             curs = conn.cursor()
             curs.execute(sqlcommand, values)
             conn.commit()  # Commit to save changes
+<<<<<<< Updated upstream
             send_verification_email(email, verification_token, user_id)
+=======
+            send_verification_email(email, verification_token, user_id)  ##
+>>>>>>> Stashed changes
             message = "Registration successful"
         except Exception as e:
             print(f"An error occurred: {e}")  # Log the error
@@ -172,7 +183,11 @@ def register():
 
         return render_template(
             "registration_result.html",
+<<<<<<< Updated upstream
             message="Please check your email to confirm your registration",
+=======
+            message="Please check your email to confirm your registration!\n\n"
+>>>>>>> Stashed changes
         )
     else:
         return render_template("register.html")
@@ -220,16 +235,26 @@ def send_verification_email(receiver_mail, verification_token, user_id):
     password = os.getenv("PASSWORD")
 
     # Construct the email message
+<<<<<<< Updated upstream
     subject = "Please verify your email."
+=======
+    subject = "Please verify your email"
+>>>>>>> Stashed changes
     verification_link = (
         f"http://127.0.0.1:5000/verify_email/{verification_token}"  # check email!!
     )
     message = (
         f"Welcome to CompareIt! \n\n Thank you for signing up! Your user id is: {user_id}."
+<<<<<<< Updated upstream
         f" Your user id will be used to login in along with your chosen password.\n\n"
         f"Please click on the following link to verify your email:\n\n{verification_link}"
     )
 
+=======
+        f"Your user id will be used to login in along with your chosen password.\n\n"
+        f"Please click on the following link to verify your email:\n\n{verification_link}"
+    )
+>>>>>>> Stashed changes
     text = f"Subject: {subject}\n\n{message}"
 
     # Send the email
