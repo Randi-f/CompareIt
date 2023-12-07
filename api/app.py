@@ -101,7 +101,17 @@ def submit():
 
 
 @app.route("/register", methods=["GET", "POST"])
+@app.route("/register", methods=["GET", "POST"])
 def register():
+    if request.method == "POST":
+        first_name = request.form["first_name"]
+        last_name = request.form["last_name"]
+        full_name = first_name + " " + last_name
+        gender = request.form["gender"]
+        email = request.form["email"]
+        dob = request.form["dob"]
+        postcode = request.form["postcode"]
+        password = request.form["password"]
     if request.method == "POST":
         first_name = request.form["first_name"]
         last_name = request.form["last_name"]
@@ -121,11 +131,27 @@ def register():
             random.choices(string.ascii_letters + string.digits, k=32)
         )
 
+        verification_token = "".join(
+            random.choices(string.ascii_letters + string.digits, k=32)
+        )
+
+        sqlcommand = """
         sqlcommand = """
             INSERT INTO my_user (user_id, name, gender, email, dob, postcode, password, email_verified, verification_token) 
             VALUES (%s, %s, %s, %s, %s, %s, %s, False, %s)
         """
+        """
 
+        values = (
+            user_id,
+            full_name,
+            gender,
+            email,
+            dob,
+            postcode,
+            password,
+            verification_token,
+        )
         values = (
             user_id,
             full_name,
@@ -158,7 +184,9 @@ def register():
             message = "Registration failed due to a technical issue."
         finally:
             if "curs" in locals():
+            if "curs" in locals():
                 curs.close()
+            if "conn" in locals():
             if "conn" in locals():
                 conn.close()
 
@@ -171,9 +199,14 @@ def register():
 
 
 @app.route("/verify_email/<verification_token>")
+
+@app.route("/verify_email/<verification_token>")
 def verify_email(verification_token):
     # You should implement logic here to check the verification token in your database
     # If the token is valid, update the 'email_verified' column for the user
+    sqlcommand = (
+        "UPDATE my_user SET email_verified = True WHERE verification_token = %s"
+    )
     sqlcommand = (
         "UPDATE my_user SET email_verified = True WHERE verification_token = %s"
     )
@@ -199,11 +232,14 @@ def verify_email(verification_token):
         message = "Registration failed due to a technical issue."
     finally:
         if "curs" in locals():
+        if "curs" in locals():
             curs.close()
+        if "conn" in locals():
         if "conn" in locals():
             conn.close()
     # For now, let's assume it's successful
     return render_template("email_verified.html")
+
 
 
 def send_verification_email(receiver_mail, verification_token, user_id):
@@ -221,6 +257,15 @@ def send_verification_email(receiver_mail, verification_token, user_id):
         f"Your user id will be used to login in along with your chosen password.\n\n"
         f"Please click on the following link to verify your email:\n\n{verification_link}"
     )
+    subject = "Please verify your email"
+    verification_link = (
+        f"http://127.0.0.1:5000/verify_email/{verification_token}"  # check email!!
+    )
+    message = (
+        f"Welcome to CompareIt! \n\n Thank you for signing up! Your user id is: {user_id}."
+        f"Your user id will be used to login in along with your chosen password.\n\n"
+        f"Please click on the following link to verify your email:\n\n{verification_link}"
+    )
     text = f"Subject: {subject}\n\n{message}"
 
     # Send the email
@@ -228,10 +273,10 @@ def send_verification_email(receiver_mail, verification_token, user_id):
     server.starttls()
     server.login(email, password)
     server.sendmail(email, receiver_mail, text)
-    # server.sendmail(email, receiver_mail, text)
     server.quit()
 
     print(f"Verification email has been sent to {receiver_mail}")
+
 
 
 # Profile route
