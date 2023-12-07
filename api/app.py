@@ -109,24 +109,11 @@ def register():
         dob = request.form["dob"]
         postcode = request.form["postcode"]
         password = request.form["password"]
-    if request.method == "POST":
-        first_name = request.form["first_name"]
-        last_name = request.form["last_name"]
-        full_name = first_name + " " + last_name
-        gender = request.form["gender"]
-        email = request.form["email"]
-        dob = request.form["dob"]
-        postcode = request.form["postcode"]
-        password = request.form["password"]
 
         user_id_initials = (first_name[0] + last_name[0]).upper()
         user_id_dob_part = dob[-2:]  # Last two digits of the year
         user_id_postcode_part = postcode[-3:]  # Last three digits of the postcode
         user_id = user_id_initials + user_id_dob_part + user_id_postcode_part
-
-        verification_token = "".join(
-            random.choices(string.ascii_letters + string.digits, k=32)
-        )
 
         verification_token = "".join(
             random.choices(string.ascii_letters + string.digits, k=32)
@@ -198,9 +185,6 @@ def verify_email(verification_token):
     sqlcommand = (
         "UPDATE my_user SET email_verified = True WHERE verification_token = %s"
     )
-    sqlcommand = (
-        "UPDATE my_user SET email_verified = True WHERE verification_token = %s"
-    )
     print(sqlcommand)
 
     server_params = {
@@ -242,18 +226,10 @@ def send_verification_email(receiver_mail, verification_token, user_id):
     )
     message = (
         f"Welcome to CompareIt! \n\n Thank you for signing up! Your user id is: {user_id}."
-        f"Your user id will be used to login in along with your chosen password.\n\n"
+        f" Your user id will be used to login in along with your chosen password.\n\n"
         f"Please click on the following link to verify your email:\n\n{verification_link}"
     )
-    subject = "Please verify your email"
-    verification_link = (
-        f"http://127.0.0.1:5000/verify_email/{verification_token}"  # check email!!
-    )
-    message = (
-        f"Welcome to CompareIt! \n\n Thank you for signing up! Your user id is: {user_id}."
-        f"Your user id will be used to login in along with your chosen password.\n\n"
-        f"Please click on the following link to verify your email:\n\n{verification_link}"
-    )
+
     text = f"Subject: {subject}\n\n{message}"
 
     # Send the email
