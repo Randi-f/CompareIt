@@ -100,7 +100,7 @@
             <div class="header">Login</div>
             <div class="form-wrapper">
                 <form id="loginForm" action="/submit" method="post">
-                    <input type="text" name="username" id="username" placeholder="username" class="input-item">
+                    <input type="text" name="user_id" id="user_id" placeholder="user_id" class="input-item">
                     <input type="password" name="password" id="password" placeholder="password" class="input-item">
                     <div><input type="submit" name="login" class="btn" value="Login" onclick="loginSystem()"></div>
                 </form>
@@ -110,7 +110,7 @@
                     event.preventDefault(); // 阻止表单默认提交行为
         
                     const formData = new FormData(this);
-                    const username = formData.get('username');
+                    const user_id = formData.get('user_id');
                     const password = formData.get('password');
         
                     const response = await fetch('/login', {
@@ -118,7 +118,7 @@
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ username, password })
+                        body: JSON.stringify({ user_id, password })
                     });
         
                     const responseData = await response.json();
@@ -129,7 +129,7 @@
                         window.location.href = '/compare';
                     } else {
                         alert(responseData.message); // 显示错误信息
-                        document.getElementById('username').value = ''; // 清空用户名和密码字段
+                        document.getElementById('user_id').value = ''; // 清空用户名和密码字段
                         document.getElementById('password').value = '';
                     }
                 });
