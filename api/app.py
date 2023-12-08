@@ -86,7 +86,7 @@ def submit():
     if user is not None:
         # Print or log the relevant information
         print(password, user[6])
-        
+
         input_encrypted_password = hashlib.md5(password.encode()).hexdigest()
 
         if input_encrypted_password == user[6]:
@@ -115,7 +115,6 @@ def register():
         dob = request.form["dob"]
         postcode = request.form["postcode"]
         password = request.form["password"]
-
 
         encrypted_password = hashlib.md5(password.encode()).hexdigest()
 
@@ -189,10 +188,11 @@ def register():
 
         return render_template(
             "registration_result.html",
-            message="Please check your email to confirm your registration!\n\n"
+            message="Please check your email to confirm your registration!\n\n",
         )
     else:
         return render_template("register.html")
+
 
 @app.route("/verify_email/<verification_token>")
 def verify_email(verification_token):
@@ -228,7 +228,6 @@ def verify_email(verification_token):
             conn.close()
     # For now, let's assume it's successful
     return render_template("email_verified.html")
-
 
 
 def send_verification_email(receiver_mail, verification_token, user_id):
