@@ -185,7 +185,6 @@ def verify_email(verification_token):
     )
     print(sqlcommand)
 
-
     try:
         conn = get_db_connection()
         curs = conn.cursor()
