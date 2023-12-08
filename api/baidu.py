@@ -1,3 +1,12 @@
+<<<<<<< HEAD
+=======
+'''
+Author: shihan
+Date: 2023-12-07 23:27:38
+version: 1.0
+description: 
+'''
+>>>>>>> f4dabb6f73fd330628848f8ff89f1190cb735180
 #百度通用翻译API,不包含词典、tts语音合成等资源，如有相关需求请联系translate_api@baidu.com
 # coding=utf-8
  
@@ -7,8 +16,12 @@ import urllib
 import random
 import json
 from pip._vendor.distlib.compat import raw_input
+<<<<<<< HEAD
 
 
+=======
+ 
+>>>>>>> f4dabb6f73fd330628848f8ff89f1190cb735180
 # 百度appid和密钥需要通过注册百度【翻译开放平台】账号后获得
 appid = '20231208001904336'        # 填写你的appid
 secretKey = '1BtHmA9RiYqLrq2VEnFm'    # 填写你的密钥
