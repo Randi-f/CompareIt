@@ -329,3 +329,7 @@ def profile():
 @app.route("/compare")
 def compare():
     return render_template("compare.html", result1={}, result2={})
+
+
+if __name__ == "__main__":
+    app.run()
