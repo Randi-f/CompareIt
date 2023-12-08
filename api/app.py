@@ -16,7 +16,9 @@ import random
 import os
 # from Controller.website1_JD import send_request_JD
 from website1_JD import send_request_JD
-from Controller.website2_WPH import send_request_WPH
+# from Controller.website2_WPH import send_request_WPH
+from website2_WPH import send_request_WPH
+
 
 
 app = Flask(__name__)
