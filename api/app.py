@@ -4,15 +4,16 @@ from lxml import html
 import requests
 import psycopg as db
 import configparser
+
 # import psycopg2 as db
 import uuid
 import hashlib
 
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 import string
 import smtplib
 import random
-
+import os
 from Controller.website1_JD import send_request_JD
 from Controller.website2_WPH import send_request_WPH
 
@@ -115,14 +116,22 @@ def register():
         postcode = request.form["postcode"]
         password = request.form["password"]
 
+
         encrypted_password = hashlib.md5(password.encode()).hexdigest()
 
-        config=configparser.ConfigParser()
-        config.read('dbtool.ini')
+        config = configparser.ConfigParser()
+        config.read("dbtool.ini")
+
         # generate unique user_id
-        sqlcommand = "SELECT COUNT(*) AS row_count FROM my_user WHERE name = '" + first_name + " "+ last_name + "';"
+        sqlcommand = (
+            "SELECT COUNT(*) AS row_count FROM my_user WHERE name = '"
+            + first_name
+            + " "
+            + last_name
+            + "';"
+        )
         try:
-            conn = db.connect(**config['connection'])
+            conn = db.connect(**config["connection"])
             curs = conn.cursor()
             curs.execute(sqlcommand)
             ret = curs.fetchone()
@@ -130,13 +139,13 @@ def register():
         except Exception as e:
             print(f"An error occurred: {e}")  # Log the error
         finally:
-            if 'curs' in locals():
+            if "curs" in locals():
                 curs.close()
-            if 'conn' in locals():
+            if "conn" in locals():
                 conn.close()
-        
+
         # user_id_initials = (first_name[0] + last_name[0]).upper() + (ret[0]+1)
-        user_id = (first_name[0] + last_name[0]).upper() + (str)(ret[0]+1)
+        user_id = (first_name[0] + last_name[0]).upper() + (str)(ret[0] + 1)
         print(user_id)
         # user_id_dob_part = dob[-2:]  # Last two digits of the year
         # user_id_postcode_part = postcode[-3:]  # Last three digits of the postcode
@@ -162,12 +171,8 @@ def register():
             verification_token,
         )
 
-
-        
-
-       
         try:
-            conn = db.connect(**config['connection'])
+            conn = db.connect(**config["connection"])
             curs = conn.cursor()
             curs.execute(sqlcommand, values)
             conn.commit()  # Commit to save changes
@@ -228,10 +233,10 @@ def verify_email(verification_token):
 
 def send_verification_email(receiver_mail, verification_token, user_id):
     # Retrieve email configuration from environment variables
-    # email = os.getenv("EMAIL")
-    email = "price.project23@gmail.com"
-    # password = os.getenv("PASSWORD")
-    password = "dkto zovm nnwx csqo"
+    email = os.getenv("EMAIL")
+    # email = "price.project23@gmail.com"
+    password = os.getenv("PASSWORD")
+    # password = "dkto zovm nnwx csqo"
 
     # Construct the email message
     subject = "Please verify your email"
