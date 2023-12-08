@@ -4,7 +4,7 @@ from lxml import html
 import requests
 import psycopg as db
 import configparser
-import requests
+
 # import psycopg2 as db
 import uuid
 import hashlib
@@ -330,6 +330,7 @@ def profile():
 def compare():
     return render_template("compare.html", result1={}, result2={})
 
+
 def send_request_JD(keyword):
     # print("sending")
     products_list = []
@@ -393,6 +394,7 @@ def send_request_JD(keyword):
         )
 
     return products_list
+
 
 def send_request_WPH(key_word):
     folder_path = "../vip_res"
@@ -488,6 +490,7 @@ def send_request_WPH(key_word):
     workbook.save("../vip_res/商品.xlsx")
     print(min_price_row[0])
     return min_price_row
+
 
 if __name__ == "__main__":
     app.run()
