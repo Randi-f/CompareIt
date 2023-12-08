@@ -1,6 +1,4 @@
-/* original template by : https://blog.csdn.net/bhegi_seg/article/details/123394504 
-since modified
-*/
+/* modified original template by : https://blog.csdn.net/bhegi_seg/article/details/123394504 */
 * {
     margin: 0;
     padding: 0;
@@ -45,23 +43,22 @@ ul li.active a{
   font-size: 30px;
   font-family: 'Impact', sans-serif;
   text-shadow: 
-    -1px -1px 0 black,  
-    1px -1px 0 black,
-    -1px 1px 0 black,
-    1px 1px 0 black;
+    -2px -2px 0 black,  
+    2px -2px 0 black,
+    -2px 2px 0 black,
+    2px 2px 0 black;
   display: inline-block;
 }
 .compare-it-header span {
   font-family: 'Impact', sans-serif;
-  color: crimson;
+  color: lightpink;
 }
 body {
     height: 100%;
 }
 .container {
-    /* height: 100%; */
-    /* background-image: linear-gradient(to right, #fbc2eb, #a6c1ee); */
-    background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url(https://images.pexels.com/photos/1303098/pexels-photo-1303098.jpeg?cs=srgb&dl=pexels-george-dolgikh-1303098.jpg&fm=jpg);
+    /* background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url(https://images.pexels.com/photos/1303098/pexels-photo-1303098.jpeg?cs=srgb&dl=pexels-george-dolgikh-1303098.jpg&fm=jpg); */
+    background-image: linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.2)), url('gingerbread.png');
     height: 100vh;
     background-size: cover;
     background-position: center;
@@ -133,7 +130,7 @@ body {
     padding: 10px;
     width: 100%;
     margin-top: 40px;
-    background-image: linear-gradient(to right, crimson, white);
+    background-image: linear-gradient(to right, crimson, lightpink);
     color: #fff;
 }
 .msg {
@@ -142,7 +139,7 @@ body {
 }
 a {
     text-decoration-line: none;
-    color: #eeabb2;
+    color: crimson;
 }
 
 .table-container {
@@ -175,12 +172,12 @@ th, td {
     overflow: hidden;
   }
   .light:hover {
-    background-color: #03e9f4;
+    background-color: lightpink;
     color: #050801;
-    box-shadow: 0 0 5px #03e9f4,
-                0 0 25px #03e9f4,
-                0 0 50px #03e9f4,
-                0 0 200px #03e9f4;
+    box-shadow: 0 0 5px lightpink,
+                0 0 25px lightpink,
+                0 0 50px lightpink,
+                0 0 200px lightpink;
   }
   .light div {
     position: absolute;
@@ -190,7 +187,7 @@ th, td {
     height: 2px;
     top: 0;
     left: -100%;
-    background: linear-gradient(to right,transparent,#03e9f4);
+    background: linear-gradient(to right,transparent,lightpink);
     animation: animate1 1s linear infinite;
   }
   .light div:nth-child(2){
@@ -198,7 +195,7 @@ th, td {
     height: 100%;
     top: -100%;
     right: 0;
-    background: linear-gradient(to bottom,transparent,#03e9f4);
+    background: linear-gradient(to bottom,transparent,lightpink);
     animation: animate2 1s linear infinite;
     animation-delay: 0.25s;
   }
@@ -207,7 +204,7 @@ th, td {
     height: 2px;
     bottom: 0;
     right: -100%;
-    background: linear-gradient(to left,transparent,#03e9f4);
+    background: linear-gradient(to left,transparent,lightpink);
     animation: animate3 1s linear infinite;
     animation-delay: 0.5s;
   }
@@ -216,16 +213,16 @@ th, td {
     height: 100%;
     bottom: -100%;
     left: 0;
-    background: linear-gradient(to top,transparent,#03e9f4);
+    background: linear-gradient(to top,transparent,lightpink);
     animation: animate4 1s linear infinite;
     animation-delay: 0.75s;
   }
   .scrolling-text {
     border: 5px solid crimson; /* 添加黑色边框 */
+    background-color: white;
     padding: 10px; 
-    color: #fff;
+    color: crimson;
     font-size: 35px;
-    /* font-family: Century Gothic; */
     position: absolute;
     top: 20%;
     left: 0;
