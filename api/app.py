@@ -8,7 +8,7 @@ import configparser
 # import psycopg2 as db
 import uuid
 import hashlib
-
+from openpyxl import Workbook
 from dotenv import load_dotenv
 import string
 import smtplib
@@ -16,10 +16,10 @@ import random
 import os
 
 # from Controller.website1_JD import send_request_JD
-from website1_JD import send_request_JD
+# from website1_JD import send_request_JD
 
 # from Controller.website2_WPH import send_request_WPH
-from website2_WPH import send_request_WPH
+# from website2_WPH import send_request_WPH
 
 
 app = Flask(__name__)
@@ -329,6 +329,167 @@ def profile():
 @app.route("/compare")
 def compare():
     return render_template("compare.html", result1={}, result2={})
+
+
+def send_request_JD(keyword):
+    # print("sending")
+    products_list = []
+    """ 爬取京东的商品数据 """
+
+    url = "https://search.jd.com/Search?keyword=" + keyword + "&enc=utf-8"
+
+    response = requests.get(url)
+    # Check the status code
+    if response.status_code == 200:
+        print("Request was successful!")
+        print("Status code:", response.status_code)
+    else:
+        print("Request failed!")
+        print("Status code:", response.status_code)
+
+    response.encoding = "utf-8"
+    html_doc = response.text
+    print(html_doc)
+    selector = html.fromstring(html_doc)
+
+    ul_list = selector.xpath('//div[@id="J_goodsList"]/ul/li')
+    if len(ul_list) == 0:
+        products_list.append(
+            {
+                "title": "network error",
+                "price": "-",
+                "link": "try later for JD goods",
+                "store": "-",
+                "referer": "JD",
+            }
+        )
+        return products_list
+    for li in ul_list:
+        title = li.xpath(
+            'div/div[@class="p-name p-name-type-2"]/a/em/text() | '
+            'div/div[@class="p-name"]/a/@title'
+        )
+
+        link = li.xpath(
+            'div/div[@class="p-name p-name-type-2"]/a/@href | '
+            'div/div[@class="p-name"]/a/@href'
+        )
+
+        price = li.xpath(
+            'div/div[@class="p-price"]/strong/i/text() | '
+            'div/div[@class="p-price"]/strong/i/text()'
+        )
+
+        store = li.xpath(
+            'div/div[@class="p-shop"]//a/text() | ' 'div//a[@class="curr-shop"]/@title'
+        )
+        products_list.append(
+            {
+                "title": title[0],
+                "price": price[0],
+                "link": "https:" + link[0],
+                "store": store[0],
+                "referer": "JD",
+            }
+        )
+
+    return products_list
+
+
+def send_request_WPH(key_word):
+    folder_path = "../vip_res"
+
+    os.makedirs(folder_path, exist_ok=True)
+
+    headers = {
+        "Referer": "https://category.vip.com/",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)",
+    }
+
+    url = "https://mapi.vip.com/vips-mobile/rest/shopping/pc/search/product/rank"
+    data = {
+        "app_name": "shop_pc",
+        "app_version": "4.0",
+        "warehouse": "VIP_HZ",
+        "fdc_area_id": "104103101",
+        "client": "pc",
+        "mobile_platform": "1",
+        "province_id": "104103",
+        "api_key": "70f71280d5d547b2a7bb370a529aeea1",
+        "user_id": "",
+        "mars_cid": "1689245318776_e2b4a7b51f99b3dd6a4e6d356e364148",
+        "wap_consumer": "a",
+        "standby_id": "nature",
+        "keyword": key_word,
+        "lv3CatIds": "",
+        "lv2CatIds": "",
+        "lv1CatIds": "",
+        "brandStoreSns": "",
+        "props": "",
+        "priceMin": "",
+        "priceMax": "",
+        "vipService": "",
+        "sort": "0",
+        "pageOffset": "0",
+        "channelId": "1",
+        "gPlatform": "PC",
+        "batchSize": "120",
+        "_": "1689250387620",
+    }
+
+    response = requests.get(url=url, params=data, headers=headers)
+    products = [i["pid"] for i in response.json()["data"]["products"]]
+
+    workbook = Workbook()
+    sheet = workbook.active
+
+    header = ["标题", "品牌", "售价", "图片", "商品信息", "详情页"]
+    sheet.append(header)
+
+    min_price_row = []
+    for i in range(0, len(products), 50):
+        product_id = ",".join(products[i : i + 50])
+        link = (
+            "https://mapi.vip.com/vips-mobile/rest/shopping/pc/product/module/list/v2"
+        )
+        params = {
+            "app_name": "shop_pc",
+            "app_version": "4.0",
+            "warehouse": "VIP_HZ",
+            "fdc_area_id": "104103101",
+            "client": "pc",
+            "mobile_platform": "1",
+            "province_id": "104103",
+            "api_key": "70f71280d5d547b2a7bb370a529aeea1",
+            "user_id": "",
+            "mars_cid": "1689245318776_e2b4a7b51f99b3dd6a4e6d356e364148",
+            "wap_consumer": "a",
+            "productIds": product_id,
+            "scene": "search",
+            "standby_id": "nature",
+            "extParams": '{"stdSizeVids":"","preheatTipsVer":"3","couponVer":"v2","exclusivePrice":"1","iconSpec":"2x","ic2label":1,"superHot":1,"bigBrand":"1"}',
+            "context": "",
+            "_": "1689250387628",
+        }
+        json_data = requests.get(url=link, params=params, headers=headers).json()
+
+        for index in json_data["data"]["products"]:
+            attr = ",".join([j["value"] for j in index["attrs"]])
+            row = [
+                index["title"],
+                index["brandShowName"],
+                index["price"]["salePrice"],
+                index["squareImage"],
+                attr,
+                f'https://detail.vip.com/detail-{index["brandId"]}-{index["productId"]}.html',
+            ]
+            if len(min_price_row) == 0 or float(row[2]) < float(min_price_row[2]):
+                min_price_row = row
+            sheet.append(row)
+
+    workbook.save("../vip_res/商品.xlsx")
+    print(min_price_row[0])
+    return min_price_row
 
 
 if __name__ == "__main__":
