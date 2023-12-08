@@ -17,6 +17,7 @@ import os
 from Controller.website1_JD import send_request_JD
 from Controller.website2_WPH import send_request_WPH
 
+
 app = Flask(__name__)
 app.secret_key = "your_unique_and_secret_key"
 
@@ -245,7 +246,11 @@ def send_verification_email(receiver_mail, verification_token, user_id):
     message = (
         f"Welcome to CompareIt! \n\n Thank you for signing up! Your user id is: {user_id}."
         f"Your user id will be used to login in along with your chosen password.\n\n"
-        f"Please click on the following link to verify your email:\n\n{verification_link}"
+        f"Please click on the following link to verify your email:\n\n{verification_link} \n\n\n"
+        f"CompareIt \n"
+        f"South Kensington, London SW7 2AZ \n"
+        f"Phone: (555) 555-5555\n"
+        f"Email: price.project23@gmail.com\n"
     )
     text = f"Subject: {subject}\n\n{message}"
 
