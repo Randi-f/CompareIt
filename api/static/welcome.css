@@ -103,7 +103,7 @@ body {
 .form-wrapper {
   position: relative;
   top: -60px;
-}
+} 
 
 .header {
     font-size: 38px;
@@ -163,7 +163,7 @@ th, td {
 .light {
     position: relative;
     padding: 25px 30px;
-    color: #03e9f4;
+    color: crimson;
     font-size: 24px;
     text-transform: uppercase;
     transition: 0.5s;
