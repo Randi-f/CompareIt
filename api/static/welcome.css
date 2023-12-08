@@ -1,17 +1,71 @@
+/* original template by : https://blog.csdn.net/bhegi_seg/article/details/123394504 
+since modified
+*/
 * {
     margin: 0;
     padding: 0;
+    font-family: "Trebuchet MS", Tahoma, sans-serif;
 }
 html {
     height: 100%;
+}
+
+ul{
+  float: right;
+  list-style-type: none;
+  margin: 15px;
+}
+ul li{
+  display: inline-block;
+}
+
+ul li a{
+  text-decoration: none;
+  color: #fff;
+  padding: 5px 20px;
+  border: 1px solid transparent;
+  transition: .6s ease;
+  border-radius: 20px;
+}
+
+ul li a:hover{
+  background-color: #fff;
+  color: #000;
+}
+ul li.active a{
+  background-color: #fff;
+  color: #000;
+}
+.compare-it-header {
+  text-align: center;
+}
+
+.compare-it-header h1 {
+  color: #fff;
+  font-size: 30px;
+  font-family: 'Impact', sans-serif;
+  text-shadow: 
+    -1px -1px 0 black,  
+    1px -1px 0 black,
+    -1px 1px 0 black,
+    1px 1px 0 black;
+  display: inline-block;
+}
+.compare-it-header span {
+  font-family: 'Impact', sans-serif;
+  color: crimson;
 }
 body {
     height: 100%;
 }
 .container {
-    height: 100%;
-    background-image: linear-gradient(to right, #fbc2eb, #a6c1ee);
-}
+    /* height: 100%; */
+    /* background-image: linear-gradient(to right, #fbc2eb, #a6c1ee); */
+    background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url(https://images.pexels.com/photos/1303098/pexels-photo-1303098.jpeg?cs=srgb&dl=pexels-george-dolgikh-1303098.jpg&fm=jpg);
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+  }
 
 .login-wrapper {
     background-color: #fff;
@@ -59,6 +113,7 @@ body {
     font-weight: bold;
     text-align: center;
     line-height: 200px; 
+    
 }
 .input-item {
     display: block;
@@ -78,7 +133,7 @@ body {
     padding: 10px;
     width: 100%;
     margin-top: 40px;
-    background-image: linear-gradient(to right, #a6c1ee, #fbc2eb);
+    background-image: linear-gradient(to right, crimson, white);
     color: #fff;
 }
 .msg {
@@ -87,7 +142,7 @@ body {
 }
 a {
     text-decoration-line: none;
-    color: #abc1ee;
+    color: #eeabb2;
 }
 
 .table-container {
@@ -107,8 +162,6 @@ th, td {
     padding: 10px; /* 设置单元格内边距 */
     text-align: left; /* 设置文本左对齐 */
 }
-
-/* author : https://blog.csdn.net/bhegi_seg/article/details/123394504 */
 
 .light {
     position: relative;
@@ -167,6 +220,28 @@ th, td {
     animation: animate4 1s linear infinite;
     animation-delay: 0.75s;
   }
+  .scrolling-text {
+    border: 5px solid crimson; /* 添加黑色边框 */
+    padding: 10px; 
+    color: #fff;
+    font-size: 35px;
+    /* font-family: Century Gothic; */
+    position: absolute;
+    top: 20%;
+    left: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    animation: scrollText 20s linear infinite; /* 10s 是滚动的持续时间，可以根据需要调整 */
+}
+/* 关键帧动画 */
+@keyframes scrollText {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(450%);
+    }
+}
   @keyframes animate1 {
     0% {
       left: -100%;
@@ -225,7 +300,7 @@ th, td {
 }
 
 body {
-  font-family: 'Arial', sans-serif;
+  /* font-family: "Trebuchet MS", Tahoma, sans-serif; */
   margin: 0;
   padding: 0;
   background-color: #f8f9fa;
@@ -236,7 +311,7 @@ header, footer {
   background-color: #343a40;
   color: #fff;
   text-align: center;
-  padding: 1.5em 0;
+  /* padding: 1.5em 0; */
 }
 
 header h1, footer p {
@@ -292,4 +367,15 @@ footer {
   margin-top: 20px;
   padding-top: 20px;
   border-top: 1px solid #495057;
+}
+.title{
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+}
+.title h1{
+  color: #fff;
+  font-size: 70px;
+  /* font-family: Century Gothic; */
 }
