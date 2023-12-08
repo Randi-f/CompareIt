@@ -112,14 +112,17 @@ form.example::after {
 
 <div class="container">
     <div class="info-wrapper">
-        <h1>Compare<span style="color: crimson;">It</span></h1>
-        <!-- <div class="header">Compare It</div> -->
+        <!-- <h1>Compare<span style="color: crimson;">It</span></h1> -->
+        <div class="header">Compare It</div>
         <div class="form-wrapper">
             <button onclick="window.location.href='/profile'"> profile </button>
             <form action="/keywordsubmit" method="post">               
-                keyword:<input type="text" name="keyword" id = "keyword" placeholder="keyword" class="input-item">
+                <!-- keyword:<input type="text" name="keyword" id = "keyword" placeholder="keyword" class="input-item"> -->
+                keyword:<input type="text" name="keyword" id = "keyword" placeholder="keyword" class="fa fa-search">
+                <i class="fa fa-search"></i>
                 <button type="submit">
                     <img src="https://static.runoob.com/images/mix/searchicon.png" width="12" alt="图片">
+                    <!-- <i class="fa fa-search"></i> -->
                 </button>
                 <!-- <input type="submit" class="myInput" value="Submit"> -->
             </form>
