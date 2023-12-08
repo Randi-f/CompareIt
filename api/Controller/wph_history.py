@@ -2,9 +2,12 @@ import os
 import requests
 from openpyxl import Workbook
 
+
 def send_request_WPH(key_word):
     folder_path = "../vip_res"
+
     os.makedirs(folder_path, exist_ok=True)
+
     headers = {
         "Referer": "https://category.vip.com/",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)",
@@ -33,7 +36,7 @@ def send_request_WPH(key_word):
         "priceMin": "",
         "priceMax": "",
         "vipService": "",
-        "sort": "1",
+        "sort": "0",
         "pageOffset": "0",
         "channelId": "1",
         "gPlatform": "PC",
@@ -87,19 +90,10 @@ def send_request_WPH(key_word):
                 attr,
                 f'https://detail.vip.com/detail-{index["brandId"]}-{index["productId"]}.html',
             ]
-            if len(min_price_row) < 3:
-                min_price_row.append(row)
-            # else:
-            #     max_value=max(min_price_row[0][2],min_price_row[1][2],min_price_row[2][2])
-            #     for j in range(3):
-            #         if min_price_row[j][2]==max_value:
-            #             break
-            #     if row[2]<max_value:
-            #         min_price_row[j]=row 
-            # sheet.append(row)
-            
-    workbook.save("../vip_res/商品.xlsx")
-    print(min_price_row)
-    return min_price_row
+            if len(min_price_row) == 0 or float(row[2]) < float(min_price_row[2]):
+                min_price_row = row
+            sheet.append(row)
 
-send_request_WPH("nike运动鞋")
+    workbook.save("../vip_res/商品.xlsx")
+    print(min_price_row[0])
+    return min_price_row
