@@ -2,6 +2,7 @@ import os
 import requests
 from openpyxl import Workbook
 
+
 def send_request_WPH(key_word):
     folder_path = "../vip_res"
     os.makedirs(folder_path, exist_ok=True)
@@ -89,9 +90,10 @@ def send_request_WPH(key_word):
             ]
             if len(min_price_row) < 3:
                 min_price_row.append(row)
-            
+
     workbook.save("../vip_res/商品.xlsx")
     print(min_price_row)
     return min_price_row
+
 
 send_request_WPH("nike运动鞋")
