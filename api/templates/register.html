@@ -132,17 +132,17 @@ function hideModal() {
                     Postal Code (UK Only):<input type="text" id = "postcode" name="postcode" placeholder="postal code" class="input-item">
                     Password:<input type="password" id = "password" name="password" placeholder="password" class="input-item">
                     Re-enter Password:<input type="password" id = "passwordnot" name="passwordnot" placeholder="re-enter password" class="input-item">
-                    <div><input type="submit" name = "createUser" class="btn" value = "Create Account" onclick="check2pwd(event)"></div> 
+                    <div class="btn-container">
+                        <input type="submit" name = "createUser" class="btn" value = "Create Account" onclick="check2pwd(event)"></div> 
+                    </div>
                 </form>
             </div>
-
+            
             <div id="myModal" class="modal">
                 <p id="modalMessage">Modal message goes here</p>
                 <span class="close" onclick="hideModal()">&times;</span>
             </div>
-
         </div>
     </div>
 </body>
-
 </html>
