@@ -85,8 +85,10 @@ def submit():
     if user is not None:
         # Print or log the relevant information
         print(password, user[6])
+        
+        input_encrypted_password = hashlib.md5(password.encode()).hexdigest()
 
-        if password == user[6]:
+        if input_encrypted_password == user[6]:
             if user[7] is True:
                 session["user"] = user_id
                 return jsonify({"message": "Login successful"})
@@ -112,6 +114,8 @@ def register():
         dob = request.form["dob"]
         postcode = request.form["postcode"]
         password = request.form["password"]
+
+        encrypted_password = hashlib.md5(password.encode()).hexdigest()
 
         config=configparser.ConfigParser()
         config.read('dbtool.ini')
@@ -154,7 +158,7 @@ def register():
             email,
             dob,
             postcode,
-            password,
+            encrypted_password,
             verification_token,
         )
 
