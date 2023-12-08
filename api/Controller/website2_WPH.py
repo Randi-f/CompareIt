@@ -89,14 +89,6 @@ def send_request_WPH(key_word):
             ]
             if len(min_price_row) < 3:
                 min_price_row.append(row)
-            # else:
-            #     max_value=max(min_price_row[0][2],min_price_row[1][2],min_price_row[2][2])
-            #     for j in range(3):
-            #         if min_price_row[j][2]==max_value:
-            #             break
-            #     if row[2]<max_value:
-            #         min_price_row[j]=row 
-            # sheet.append(row)
             
     workbook.save("../vip_res/商品.xlsx")
     print(min_price_row)
