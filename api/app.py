@@ -4,17 +4,19 @@ from lxml import html
 import requests
 import psycopg as db
 import configparser
+
 # import psycopg2 as db
 import uuid
 import hashlib
 
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 import string
 import smtplib
 import random
-
+import os
 from Controller.website1_JD import send_request_JD
 from Controller.website2_WPH import send_request_WPH
+
 
 app = Flask(__name__)
 app.secret_key = "your_unique_and_secret_key"
@@ -85,7 +87,7 @@ def submit():
     if user is not None:
         # Print or log the relevant information
         print(password, user[6])
-        
+
         input_encrypted_password = hashlib.md5(password.encode()).hexdigest()
 
         if input_encrypted_password == user[6]:
@@ -117,12 +119,19 @@ def register():
 
         encrypted_password = hashlib.md5(password.encode()).hexdigest()
 
-        config=configparser.ConfigParser()
-        config.read('dbtool.ini')
+        config = configparser.ConfigParser()
+        config.read("dbtool.ini")
+
         # generate unique user_id
-        sqlcommand = "SELECT COUNT(*) AS row_count FROM my_user WHERE name = '" + first_name + " "+ last_name + "';"
+        sqlcommand = (
+            "SELECT COUNT(*) AS row_count FROM my_user WHERE name = '"
+            + first_name
+            + " "
+            + last_name
+            + "';"
+        )
         try:
-            conn = db.connect(**config['connection'])
+            conn = db.connect(**config["connection"])
             curs = conn.cursor()
             curs.execute(sqlcommand)
             ret = curs.fetchone()
@@ -130,13 +139,13 @@ def register():
         except Exception as e:
             print(f"An error occurred: {e}")  # Log the error
         finally:
-            if 'curs' in locals():
+            if "curs" in locals():
                 curs.close()
-            if 'conn' in locals():
+            if "conn" in locals():
                 conn.close()
-        
+
         # user_id_initials = (first_name[0] + last_name[0]).upper() + (ret[0]+1)
-        user_id = (first_name[0] + last_name[0]).upper() + (str)(ret[0]+1)
+        user_id = (first_name[0] + last_name[0]).upper() + (str)(ret[0] + 1)
         print(user_id)
         # user_id_dob_part = dob[-2:]  # Last two digits of the year
         # user_id_postcode_part = postcode[-3:]  # Last three digits of the postcode
@@ -162,16 +171,12 @@ def register():
             verification_token,
         )
 
-
-        
-
-       
         try:
-            conn = db.connect(**config['connection'])
+            conn = db.connect(**config["connection"])
             curs = conn.cursor()
             curs.execute(sqlcommand, values)
             conn.commit()  # Commit to save changes
-            send_verification_email(email, verification_token, user_id)  ##
+            send_verification_email(email, verification_token, user_id)  
             message = "Registration successful"
         except Exception as e:
             print(f"An error occurred: {e}")  # Log the error
@@ -184,10 +189,11 @@ def register():
 
         return render_template(
             "registration_result.html",
-            message="Please check your email to confirm your registration!\n\n"
+            message="Please check your email to confirm your registration!\n\n",
         )
     else:
         return render_template("register.html")
+
 
 @app.route("/verify_email/<verification_token>")
 def verify_email(verification_token):
@@ -225,13 +231,12 @@ def verify_email(verification_token):
     return render_template("email_verified.html")
 
 
-
 def send_verification_email(receiver_mail, verification_token, user_id):
     # Retrieve email configuration from environment variables
-    # email = os.getenv("EMAIL")
-    email = "price.project23@gmail.com"
-    # password = os.getenv("PASSWORD")
-    password = "dkto zovm nnwx csqo"
+    email = os.getenv("EMAIL")
+    # email = "price.project23@gmail.com"
+    password = os.getenv("PASSWORD")
+    # password = "dkto zovm nnwx csqo"
 
     # Construct the email message
     subject = "Please verify your email"
@@ -241,7 +246,11 @@ def send_verification_email(receiver_mail, verification_token, user_id):
     message = (
         f"Welcome to CompareIt! \n\n Thank you for signing up! Your user id is: {user_id}."
         f"Your user id will be used to login in along with your chosen password.\n\n"
-        f"Please click on the following link to verify your email:\n\n{verification_link}"
+        f"Please click on the following link to verify your email:\n\n{verification_link} \n\n\n"
+        f"CompareIt \n"
+        f"South Kensington, London SW7 2AZ \n"
+        f"Phone: (555) 555-5555\n"
+        f"Email: price.project23@gmail.com\n"
     )
     text = f"Subject: {subject}\n\n{message}"
 

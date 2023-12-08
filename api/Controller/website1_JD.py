@@ -2,7 +2,6 @@ import requests
 from lxml import html
 
 
-
 # SERVER_URL = "your_server_url"
 # accessToken = "your_access_token"
 # appKey = "your_app_key"
@@ -61,8 +60,8 @@ def send_request_JD(keyword):
     selector = html.fromstring(html_doc)
 
     ul_list = selector.xpath('//div[@id="J_goodsList"]/ul/li')
-    if len(ul_list)==0:
-       products_list.append(
+    if len(ul_list) == 0:
+        products_list.append(
             {
                 "title": "network error",
                 "price": "-",
@@ -71,7 +70,7 @@ def send_request_JD(keyword):
                 "referer": "JD",
             }
         )
-       return products_list
+        return products_list
     for li in ul_list:
         title = li.xpath(
             'div/div[@class="p-name p-name-type-2"]/a/em/text() | '

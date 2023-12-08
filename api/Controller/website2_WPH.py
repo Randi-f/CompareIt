@@ -1,5 +1,7 @@
-import os, requests
+import os
+import requests
 from openpyxl import Workbook
+
 
 def send_request_WPH(key_word):
     folder_path = "../vip_res"
