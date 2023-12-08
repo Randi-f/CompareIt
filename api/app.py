@@ -175,7 +175,7 @@ def register():
             curs = conn.cursor()
             curs.execute(sqlcommand, values)
             conn.commit()  # Commit to save changes
-            send_verification_email(email, verification_token, user_id)  ##
+            send_verification_email(email, verification_token, user_id)  
             message = "Registration successful"
         except Exception as e:
             print(f"An error occurred: {e}")  # Log the error
