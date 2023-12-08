@@ -1,17 +1,12 @@
+import psycopg as db
+import configparser
 """
 Author: shihan
 Date: 2023-12-07 21:37:25
 version: 1.0
 description: 
 """
-"""
-Author: shihan
-Date: 2023-11-28 19:41:59
-version: 1.0
-description: 
-"""
-import psycopg as db
-import configparser
+
 
 first_name = "Shihan"
 last_name = "Fu"
