@@ -14,11 +14,12 @@ import string
 import smtplib
 import random
 import os
+
 # from Controller.website1_JD import send_request_JD
 from website1_JD import send_request_JD
+
 # from Controller.website2_WPH import send_request_WPH
 from website2_WPH import send_request_WPH
-
 
 
 app = Flask(__name__)
@@ -179,7 +180,7 @@ def register():
             curs = conn.cursor()
             curs.execute(sqlcommand, values)
             conn.commit()  # Commit to save changes
-            send_verification_email(email, verification_token, user_id)  
+            send_verification_email(email, verification_token, user_id)
             message = "Registration successful"
         except Exception as e:
             print(f"An error occurred: {e}")  # Log the error
