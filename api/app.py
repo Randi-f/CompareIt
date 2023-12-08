@@ -3,18 +3,25 @@ from flask import Flask, render_template, jsonify, request, session
 from lxml import html
 import requests
 import psycopg as db
+import configparser
 
 # import psycopg2 as db
 import uuid
 import hashlib
 
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 import string
 import smtplib
 import random
+import os
 
-from Controller.website1_JD import *;
-from Controller.website2_WPH import *;
+# from Controller.website1_JD import send_request_JD
+from website1_JD import send_request_JD
+
+# from Controller.website2_WPH import send_request_WPH
+from website2_WPH import send_request_WPH
+
+
 app = Flask(__name__)
 app.secret_key = "your_unique_and_secret_key"
 
@@ -44,7 +51,6 @@ def get_db_connection():
 def hello_world():
     return render_template("index.html")
     # return render_template("compare.html", result1={}, result2={})
-
 
 
 @app.route("/keywordsubmit", methods=["POST"])
@@ -86,7 +92,9 @@ def submit():
         # Print or log the relevant information
         print(password, user[6])
 
-        if password == user[6]:
+        input_encrypted_password = hashlib.md5(password.encode()).hexdigest()
+
+        if input_encrypted_password == user[6]:
             if user[7] is True:
                 session["user"] = user_id
                 return jsonify({"message": "Login successful"})
@@ -113,10 +121,39 @@ def register():
         postcode = request.form["postcode"]
         password = request.form["password"]
 
-        user_id_initials = (first_name[0] + last_name[0]).upper()
-        user_id_dob_part = dob[-2:]  # Last two digits of the year
-        user_id_postcode_part = postcode[-3:]  # Last three digits of the postcode
-        user_id = user_id_initials + user_id_dob_part + user_id_postcode_part
+        encrypted_password = hashlib.md5(password.encode()).hexdigest()
+
+        config = configparser.ConfigParser()
+        config.read("dbtool.ini")
+
+        # generate unique user_id
+        sqlcommand = (
+            "SELECT COUNT(*) AS row_count FROM my_user WHERE name = '"
+            + first_name
+            + " "
+            + last_name
+            + "';"
+        )
+        try:
+            conn = db.connect(**config["connection"])
+            curs = conn.cursor()
+            curs.execute(sqlcommand)
+            ret = curs.fetchone()
+            # print(ret[0])
+        except Exception as e:
+            print(f"An error occurred: {e}")  # Log the error
+        finally:
+            if "curs" in locals():
+                curs.close()
+            if "conn" in locals():
+                conn.close()
+
+        # user_id_initials = (first_name[0] + last_name[0]).upper() + (ret[0]+1)
+        user_id = (first_name[0] + last_name[0]).upper() + (str)(ret[0] + 1)
+        print(user_id)
+        # user_id_dob_part = dob[-2:]  # Last two digits of the year
+        # user_id_postcode_part = postcode[-3:]  # Last three digits of the postcode
+        # user_id = user_id_initials + user_id_dob_part + user_id_postcode_part
 
         verification_token = "".join(
             random.choices(string.ascii_letters + string.digits, k=32)
@@ -134,31 +171,12 @@ def register():
             email,
             dob,
             postcode,
-            password,
+            encrypted_password,
             verification_token,
         )
-        values = (
-            user_id,
-            full_name,
-            gender,
-            email,
-            dob,
-            postcode,
-            password,
-            verification_token,
-        )
-
-        server_params = {
-            "dbname": "sf23",
-            "host": "db.doc.ic.ac.uk",
-            "port": "5432",
-            "user": "sf23",
-            "password": "3048=N35q4nEsm",
-            "client_encoding": "utf-8",
-        }
 
         try:
-            conn = db.connect(**server_params)
+            conn = db.connect(**config["connection"])
             curs = conn.cursor()
             curs.execute(sqlcommand, values)
             conn.commit()  # Commit to save changes
@@ -175,7 +193,7 @@ def register():
 
         return render_template(
             "registration_result.html",
-            message="Please check your email to confirm your registration",
+            message="Please check your email to confirm your registration!\n\n",
         )
     else:
         return render_template("register.html")
@@ -219,10 +237,10 @@ def verify_email(verification_token):
 
 def send_verification_email(receiver_mail, verification_token, user_id):
     # Retrieve email configuration from environment variables
-    # email = os.getenv("EMAIL")
-    email = "price.project23@gmail.com"
-    # password = os.getenv("PASSWORD")
-    password = "dkto zovm nnwx csqo"
+    email = os.getenv("EMAIL")
+    # email = "price.project23@gmail.com"
+    password = os.getenv("PASSWORD")
+    # password = "dkto zovm nnwx csqo"
 
     # Construct the email message
     subject = "Please verify your email"
@@ -231,10 +249,13 @@ def send_verification_email(receiver_mail, verification_token, user_id):
     )
     message = (
         f"Welcome to CompareIt! \n\n Thank you for signing up! Your user id is: {user_id}."
-        f" Your user id will be used to login in along with your chosen password.\n\n"
-        f"Please click on the following link to verify your email:\n\n{verification_link}"
+        f"Your user id will be used to login in along with your chosen password.\n\n"
+        f"Please click on the following link to verify your email:\n\n{verification_link} \n\n\n"
+        f"CompareIt \n"
+        f"South Kensington, London SW7 2AZ \n"
+        f"Phone: (555) 555-5555\n"
+        f"Email: price.project23@gmail.com\n"
     )
-
     text = f"Subject: {subject}\n\n{message}"
 
     # Send the email
@@ -308,9 +329,3 @@ def profile():
 @app.route("/compare")
 def compare():
     return render_template("compare.html", result1={}, result2={})
-
-
-
-
-
-

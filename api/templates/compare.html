@@ -12,7 +12,7 @@
 <head>
 
 
-<title>Compare It !</title>
+<title>CompareIt</title>
 <meta charset="utf-8" />
 <link rel="stylesheet" href="{{ url_for('static',filename='welcome.css') }}">
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
@@ -112,7 +112,8 @@ form.example::after {
 
 <div class="container">
     <div class="info-wrapper">
-        <div class="header">Compare It</div>
+        <h1>Compare<span style="color: crimson;">It</span></h1>
+        <!-- <div class="header">Compare It</div> -->
         <div class="form-wrapper">
             <button onclick="window.location.href='/profile'"> profile </button>
             <form action="/keywordsubmit" method="post">               
@@ -127,11 +128,11 @@ form.example::after {
         <div class="table-container">
             <table border="1">
                 <tr>
-                    <th>title</th>
-                    <th>link</th>
-                    <th>price</th>
-                    <th>manufacturer</th>
-                    <th>other</th>
+                    <th>Item</th>
+                    <th>Link</th>
+                    <th>Price</th>
+                    <th>Manufacturer</th>
+                    <th>Market</th>
                 </tr>
                 
                 <tr>
@@ -139,14 +140,14 @@ form.example::after {
                     <td>{{ result1['link'] }}</td>
                     <td>{{ result1['price'] }}</td>
                     <td>{{ result1['manufacturer'] }}</td>
-                    <td>JD</td>
+                    <td>website 1: JD</td>
                 </tr>
                 <tr>
                     <td>{{ result2[0] }}</td>
                     <td>{{ result2[5] }}</td>
                     <td>{{ result2[2] }}</td>
                     <td>{{ result2[1] }}</td>
-                    <td>WPH</td>
+                    <td>website 2: WPH</td>
                 </tr>
 
                 
@@ -160,7 +161,7 @@ form.example::after {
 
 
 
-<input type="text" id="myInput" onkeyup="searchByKeywords()" placeholder="search info...">
+<!-- <input type="text" id="myInput" onkeyup="searchByKeywords()" placeholder="search info..."> -->
 <!-- <button type="button" onclick="searchInfo()"><i class="fa fa-search"></i></button> -->
 <div id="data"></div>
 <!-- <form class="example" action="/action_page.php" style="margin:auto;max-width:300px"> -->
