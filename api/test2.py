@@ -4,7 +4,7 @@ Date: 2023-11-28 19:50:03
 version: 1.0
 description: 
 """
-import psycopg2 as db
+import psycopg as db
 
 
 def name(keyword):
