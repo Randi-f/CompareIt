@@ -14,6 +14,10 @@ import string
 import smtplib
 import random
 import os
+import http.client
+import urllib
+import json
+from pip._vendor.distlib.compat import raw_input
 
 # from Controller.website1_JD import send_request_JD
 # from website1_JD import send_request_JD
@@ -27,73 +31,69 @@ app.secret_key = "your_unique_and_secret_key"
 
 
 def get_db_connection():
-    # server_params = {
-    #     'dbname': 'nl1023',
-    #     'host': 'db.doc.ic.ac.uk',
-    #     'port': '5432',
-    #     'user': 'nl1023',
-    #     'password': 'aFZK-3CzFH*j3y',
-    #     'client_encoding': 'utf-8'
-    # }
-    server_params = {
-        "dbname": "sf23",
-        "host": "db.doc.ic.ac.uk",
-        "port": "5432",
-        "user": "sf23",
-        "password": "3048=N35q4nEsm",
-        "client_encoding": "utf-8",
-    }
-    return db.connect(**server_params)
+    config = configparser.ConfigParser()
+    config.read("dbtool.ini")
+    return db.connect(**config["connection"])
 
 
-# homepage route for the app
+# home page for the app
 @app.route("/")
 def hello_world():
     return render_template("index.html")
-    # return render_template("compare.html", result1={}, result2={})
 
 
+# compare page for the app
 @app.route("/keywordsubmit", methods=["POST"])
 def keywordsubmit():
     keyword = request.form.get("keyword")
     products_list = send_request_JD(keyword)
-    # if(products_list):
-
     result2 = send_request_WPH(keyword)
-    # print(products_list[0])
     return render_template("compare.html", result1=products_list[0], result2=result2)
-    # return products_list[0]
 
 
+# @app.route('/get_data')
+# def get_data():
+#     # if request.method == 'POST':
+#     #     key_word = request.form['keyword']
+#     key_word = "t shirt"
+#     data = send_request_WPH(key_word)
+#     return jsonify(data)
+
+
+@app.route("/comparev2")
+def comparev2():
+    # if request.method == 'POST':
+    #     key_word = request.form['keyword']
+    key_word = "t shirt"
+    data = send_request_WPH(key_word)
+    return render_template("comparev2.html")
+
+
+# login page
 @app.route("/login")
 def login():
     return render_template("login.html")
 
 
+# login submit
 @app.route("/login", methods=["POST"])
 def submit():
     data = request.json
-
     user_id = data.get("user_id")
     password = data.get("password")
 
     conn = get_db_connection()
-
     cursor = conn.cursor()
-
     query = "SELECT * FROM my_user WHERE user_id = %s"
     cursor.execute(query, (user_id,))
     user = cursor.fetchone()
-
     conn.close()
 
     # Check if user is not None before accessing its elements
     if user is not None:
         # Print or log the relevant information
         print(password, user[6])
-
         input_encrypted_password = hashlib.md5(password.encode()).hexdigest()
-
         if input_encrypted_password == user[6]:
             if user[7] is True:
                 session["user"] = user_id
@@ -109,6 +109,7 @@ def submit():
         return jsonify({"message": "User not found"}), 401
 
 
+# register page
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -120,11 +121,7 @@ def register():
         dob = request.form["dob"]
         postcode = request.form["postcode"]
         password = request.form["password"]
-
         encrypted_password = hashlib.md5(password.encode()).hexdigest()
-
-        config = configparser.ConfigParser()
-        config.read("dbtool.ini")
 
         # generate unique user_id
         sqlcommand = (
@@ -135,11 +132,10 @@ def register():
             + "';"
         )
         try:
-            conn = db.connect(**config["connection"])
+            conn = get_db_connection()
             curs = conn.cursor()
             curs.execute(sqlcommand)
             ret = curs.fetchone()
-            # print(ret[0])
         except Exception as e:
             print(f"An error occurred: {e}")  # Log the error
         finally:
@@ -148,9 +144,11 @@ def register():
             if "conn" in locals():
                 conn.close()
 
-        # user_id_initials = (first_name[0] + last_name[0]).upper() + (ret[0]+1)
-        user_id = (first_name[0] + last_name[0]).upper() + (str)(ret[0] + 1)
+        # approach 1
+        user_id = (first_name + last_name).lower() + (str)(ret[0] + 1)
         print(user_id)
+        # approach 2
+        # user_id_initials = (first_name[0] + last_name[0]).upper() + (ret[0]+1)
         # user_id_dob_part = dob[-2:]  # Last two digits of the year
         # user_id_postcode_part = postcode[-3:]  # Last three digits of the postcode
         # user_id = user_id_initials + user_id_dob_part + user_id_postcode_part
@@ -176,7 +174,7 @@ def register():
         )
 
         try:
-            conn = db.connect(**config["connection"])
+            conn = get_db_connection()
             curs = conn.cursor()
             curs.execute(sqlcommand, values)
             conn.commit()  # Commit to save changes
@@ -199,6 +197,7 @@ def register():
         return render_template("register.html")
 
 
+# email verification
 @app.route("/verify_email/<verification_token>")
 def verify_email(verification_token):
     # You should implement logic here to check the verification token in your database
@@ -208,17 +207,8 @@ def verify_email(verification_token):
     )
     print(sqlcommand)
 
-    server_params = {
-        "dbname": "sf23",
-        "host": "db.doc.ic.ac.uk",
-        "port": "5432",
-        "user": "sf23",
-        "password": "3048=N35q4nEsm",
-        "client_encoding": "utf-8",
-    }
-
     try:
-        conn = db.connect(**server_params)
+        conn = get_db_connection()
         curs = conn.cursor()
         curs.execute(sqlcommand, (verification_token,))
         conn.commit()  # Commit to save changes
@@ -235,6 +225,7 @@ def verify_email(verification_token):
     return render_template("email_verified.html")
 
 
+# function: send verification email
 def send_verification_email(receiver_mail, verification_token, user_id):
     # Retrieve email configuration from environment variables
     email = os.getenv("EMAIL")
@@ -268,32 +259,16 @@ def send_verification_email(receiver_mail, verification_token, user_id):
     print(f"Verification email has been sent to {receiver_mail}")
 
 
-# Profile route
+# Profile page
 @app.route("/profile")
 def profile():
-    server_params = {
-        "dbname": "sf23",
-        "host": "db.doc.ic.ac.uk",
-        "port": "5432",
-        "user": "sf23",
-        "password": "3048=N35q4nEsm",
-        "client_encoding": "utf-8",
-    }
     if "user" in session:
         username = session["user"]
 
         # Connect to the database
         try:
-            conn = db.connect(**server_params)
+            conn = get_db_connection()
             curs = conn.cursor()
-            # curs.execute(sqlcommand, values)
-            # conn.commit()  # Commit to save changes
-
-            # config=configparser.ConfigParser()
-            # config.read('dbtool.ini')
-
-            # conn = db.connect(**config['connection'])
-            # curs = conn.cursor()
 
             # Perform the profile query to fetch user data based on the username
             curs.execute("SELECT * FROM my_user WHERE user_id = %s", (username,))
@@ -326,18 +301,16 @@ def profile():
         return "You are not logged in. Please log in."
 
 
+# compare page
 @app.route("/compare")
 def compare():
     return render_template("compare.html", result1={}, result2={})
 
 
+# function send request to JD
 def send_request_JD(keyword):
-    # print("sending")
     products_list = []
-    """ 爬取京东的商品数据 """
-
     url = "https://search.jd.com/Search?keyword=" + keyword + "&enc=utf-8"
-
     response = requests.get(url)
     # Check the status code
     if response.status_code == 200:
@@ -349,7 +322,7 @@ def send_request_JD(keyword):
 
     response.encoding = "utf-8"
     html_doc = response.text
-    print(html_doc)
+    # print(html_doc)
     selector = html.fromstring(html_doc)
 
     ul_list = selector.xpath('//div[@id="J_goodsList"]/ul/li')
@@ -396,10 +369,10 @@ def send_request_JD(keyword):
     return products_list
 
 
+# function send request to WPH
 def send_request_WPH(key_word):
-    folder_path = "../vip_res"
-
-    os.makedirs(folder_path, exist_ok=True)
+    # folder_path = "../vip_res"
+    # os.makedirs(folder_path, exist_ok=True)
 
     headers = {
         "Referer": "https://category.vip.com/",
@@ -487,9 +460,69 @@ def send_request_WPH(key_word):
                 min_price_row = row
             sheet.append(row)
 
-    workbook.save("../vip_res/商品.xlsx")
-    print(min_price_row[0])
+    # workbook.save("../vip_res/商品.xlsx")
+    print("最低价商品" + min_price_row[0])
+    translated = translate_to_english(min_price_row[0])
+    print(translated)
+    min_price_row[0] += str(translated)
+    print(min_price_row)
     return min_price_row
+
+
+def translate_to_english(content):
+    # 百度appid和密钥需要通过注册百度【翻译开放平台】账号后获得
+    appid = "20231208001904336"  # 填写你的appid
+    secretKey = "1BtHmA9RiYqLrq2VEnFm"  # 填写你的密钥
+
+    httpClient = None
+    myurl = "/api/trans/vip/translate"  # 通用翻译API HTTP地址
+
+    fromLang = "auto"  # 原文语种
+    toLang = "en"  # 译文语种
+    salt = random.randint(32768, 65536)
+    # 手动录入翻译内容，q存放
+    # q = raw_input("please input the word you want to translate:")
+    q = content
+    sign = appid + q + str(salt) + secretKey
+    sign = hashlib.md5(sign.encode()).hexdigest()
+    myurl = (
+        myurl
+        + "?appid="
+        + appid
+        + "&q="
+        + urllib.parse.quote(q)
+        + "&from="
+        + fromLang
+        + "&to="
+        + toLang
+        + "&salt="
+        + str(salt)
+        + "&sign="
+        + sign
+    )
+
+    dst_value = "null"
+    # 建立会话，返回结果
+    try:
+        httpClient = http.client.HTTPConnection("api.fanyi.baidu.com")
+        httpClient.request("GET", myurl)
+        # response是HTTPResponse对象
+        response = httpClient.getresponse()
+        result_all = response.read().decode("utf-8")
+        result = json.loads(result_all)
+        print(result)
+        first_translation = result["trans_result"][0]
+        # Access the value associated with the 'dst' key
+        dst_value = first_translation["dst"]
+        print(dst_value)
+        return dst_value
+
+    except Exception as e:
+        print(e)
+    finally:
+        if httpClient:
+            httpClient.close()
+    return dst_value
 
 
 if __name__ == "__main__":
