@@ -371,8 +371,8 @@ def send_request_JD(keyword):
 
 # function send request to WPH
 def send_request_WPH(key_word):
-    folder_path = "../vip_res"
-    os.makedirs(folder_path, exist_ok=True)
+    # folder_path = "../vip_res"
+    # os.makedirs(folder_path, exist_ok=True)
 
     headers = {
         "Referer": "https://category.vip.com/",
@@ -460,7 +460,7 @@ def send_request_WPH(key_word):
                 min_price_row = row
             sheet.append(row)
 
-    workbook.save("../vip_res/商品.xlsx")
+    # workbook.save("../vip_res/商品.xlsx")
     print("最低价商品" + min_price_row[0])
     translated = translate_to_english(min_price_row[0])
     print(translated)
