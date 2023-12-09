@@ -1,6 +1,13 @@
+'''
+Author: shihan
+Date: 2023-12-07 21:37:25
+version: 1.0
+description: 
+'''
 import unittest
 from flask import Flask
 import app
+from app import translate_to_english
 
 
 class TestApp(unittest.TestCase):
@@ -14,5 +21,10 @@ class TestApp(unittest.TestCase):
         self.assertIn(b"Login", response.data)
 
 
-if __name__ == "__main__":
-    unittest.main()
+def test_translate_to_english():
+    assert (
+        translate_to_english("接入举例") == "Access examples"
+    )
+
+# if __name__ == "__main__":
+#     unittest.main()
