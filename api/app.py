@@ -14,6 +14,10 @@ import string
 import smtplib
 import random
 import os
+import http.client
+import urllib
+import json
+from pip._vendor.distlib.compat import raw_input
 
 # from Controller.website1_JD import send_request_JD
 # from website1_JD import send_request_JD
@@ -45,6 +49,24 @@ def keywordsubmit():
     products_list = send_request_JD(keyword)
     result2 = send_request_WPH(keyword)
     return render_template("compare.html", result1=products_list[0], result2=result2)
+
+
+# @app.route('/get_data')
+# def get_data():
+#     # if request.method == 'POST':
+#     #     key_word = request.form['keyword']
+#     key_word = "t shirt"
+#     data = send_request_WPH(key_word)
+#     return jsonify(data)
+
+
+@app.route("/comparev2")
+def comparev2():
+    # if request.method == 'POST':
+    #     key_word = request.form['keyword']
+    key_word = "t shirt"
+    data = send_request_WPH(key_word)
+    return render_template("comparev2.html")
 
 
 # login page
@@ -300,7 +322,7 @@ def send_request_JD(keyword):
 
     response.encoding = "utf-8"
     html_doc = response.text
-    print(html_doc)
+    # print(html_doc)
     selector = html.fromstring(html_doc)
 
     ul_list = selector.xpath('//div[@id="J_goodsList"]/ul/li')
@@ -439,8 +461,67 @@ def send_request_WPH(key_word):
             sheet.append(row)
 
     workbook.save("../vip_res/商品.xlsx")
-    print(min_price_row[0])
+    print("最低价商品" + min_price_row[0])
+    translated = translate_to_english(min_price_row[0])
+    print(translated)
+    min_price_row[0] += str(translated)
+    print(min_price_row)
     return min_price_row
+
+
+def translate_to_english(content):
+    # 百度appid和密钥需要通过注册百度【翻译开放平台】账号后获得
+    appid = "20231208001904336"  # 填写你的appid
+    secretKey = "1BtHmA9RiYqLrq2VEnFm"  # 填写你的密钥
+
+    httpClient = None
+    myurl = "/api/trans/vip/translate"  # 通用翻译API HTTP地址
+
+    fromLang = "auto"  # 原文语种
+    toLang = "en"  # 译文语种
+    salt = random.randint(32768, 65536)
+    # 手动录入翻译内容，q存放
+    # q = raw_input("please input the word you want to translate:")
+    q = content
+    sign = appid + q + str(salt) + secretKey
+    sign = hashlib.md5(sign.encode()).hexdigest()
+    myurl = (
+        myurl
+        + "?appid="
+        + appid
+        + "&q="
+        + urllib.parse.quote(q)
+        + "&from="
+        + fromLang
+        + "&to="
+        + toLang
+        + "&salt="
+        + str(salt)
+        + "&sign="
+        + sign
+    )
+
+    dst_value = "null"
+    # 建立会话，返回结果
+    try:
+        httpClient = http.client.HTTPConnection("api.fanyi.baidu.com")
+        httpClient.request("GET", myurl)
+        # response是HTTPResponse对象
+        response = httpClient.getresponse()
+        result_all = response.read().decode("utf-8")
+        result = json.loads(result_all)
+        first_translation = result["trans_result"][0]
+        # Access the value associated with the 'dst' key
+        dst_value = first_translation["dst"]
+        print(dst_value)
+        return dst_value
+
+    except Exception as e:
+        print(e)
+    finally:
+        if httpClient:
+            httpClient.close()
+    return dst_value
 
 
 if __name__ == "__main__":
