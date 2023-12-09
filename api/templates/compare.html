@@ -11,22 +11,20 @@
 <html>
 <head>
 
-
 <title>CompareIt</title>
 <meta charset="utf-8" />
 <link rel="stylesheet" href="{{ url_for('static',filename='welcome.css') }}">
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-
 
 <style>
-table{width:600px; 
-border-collapse:collapse; 
-text-align:center;
+table{
+    width:600px; 
+    border-collapse:collapse; 
+    text-align:center;
 }
-td,th{border:1px solid #ccc}
-body {
-  font-family: Arial;
-}
+td,th{
+    border: 1px solid black; 
+} 
+
 
 * {
   box-sizing: border-box;
@@ -63,7 +61,8 @@ form.example::after {
   display: table;
 }
 #myInput {
-    background-image: url('https://static.runoob.com/images/mix/searchicon.png'); /* 搜索按钮 */
+    /* background-image: url('https://static.runoob.com/images/mix/searchicon.png');  */
+    
     background-position: 10px 12px; /* 定位搜索按钮 */
     background-repeat: no-repeat; /* 不重复图片 */
     width: 100%;
@@ -76,7 +75,7 @@ form.example::after {
 #myTable {
     border-collapse: collapse; 
     width: 100%; 
-    border: 1px solid #ddd;
+    border: 1px solid black;
     font-size: 18px; 
 }
  
@@ -101,62 +100,75 @@ form.example::after {
 <script src="__JS__/jquery-3.6.3.min.js"></script> -->
 </head>
 <body>
-<select id="columnName">
+<!-- <select id="columnName"> -->
 </select>
 
 <script>
     
 </script>
 
-
-
-<div class="container">
-    <div class="info-wrapper">
-        <h1>Compare<span style="color: crimson;">It</span></h1>
-        <!-- <div class="header">Compare It</div> -->
-        <div class="form-wrapper">
-            <button onclick="window.location.href='/profile'"> profile </button>
-            <form action="/keywordsubmit" method="post">               
-                keyword:<input type="text" name="keyword" id = "keyword" placeholder="keyword" class="input-item">
-                <button type="submit">
-                    <img src="https://static.runoob.com/images/mix/searchicon.png" width="12" alt="图片">
-                </button>
-                <!-- <input type="submit" class="myInput" value="Submit"> -->
-            </form>
-
+<!-- <div class="navbar">
+    <div class="dropdown">
+        <button class="dropbtn">Menu</button>
+        <div class="dropdown-content">
+            <a href="/">Home</a>
+            <a href="/login">Log In</a>
+            <a href="/register">Register</a>
+            <a href="/profile">Profile</a>
+            <a href="/compare">CompareIt Search</a>
         </div>
-        <div class="table-container">
-            <table border="1">
-                <tr>
-                    <th>Item</th>
-                    <th>Link</th>
-                    <th>Price</th>
-                    <th>Manufacturer</th>
-                    <th>Market</th>
-                </tr>
-                
-                <tr>
-                    <td>{{ result1['title'] }}</td>
-                    <td>{{ result1['link'] }}</td>
-                    <td>{{ result1['price'] }}</td>
-                    <td>{{ result1['manufacturer'] }}</td>
-                    <td>JD</td>
-                </tr>
-                <tr>
-                    <td>{{ result2[0] }}</td>
-                    <td>{{ result2[5] }}</td>
-                    <td>{{ result2[2] }}</td>
-                    <td>{{ result2[1] }}</td>
-                    <td>WPH</td>
-                </tr>
+    </div> -->
 
-                
-            </table>
+    <div class="container">
+        <div class="compare-it-header">
+            <h1>Compare<span>It</span></h1>
         </div>
-
-    </div>
+        <ul>
+            <li class="active"><a href="/profile">PROFILE</a></li>
+        </ul>
+        
+        <div class="compare-wrapper">
+            <div class="form-wrapper">
+               
+                <!-- <button class="btn" onclick="window.location.href='/profile'">Profile</button> -->
+                <!-- <button onclick="window.location.href='/profile'"> profile </button> -->
+                <form action="/keywordsubmit" method="post">               
+                    Keyword:<input type="text" name="keyword" id = "keyword" placeholder="keyword" class="input-item">
+                    <button type="submit" class="btn">Search</button>
+                    <!-- <button type="submit">
+                        <img src="https://static.runoob.com/images/mix/searchicon.png" width="12" alt="图片">
+                    </button> -->
+                    <!-- <input type="submit" class="myInput" value="Submit"> -->
+                </form>
+                <div class="table-container">
+                    <table border="1">
+                        <tr>
+                            <th>Item</th>
+                            <th>Link</th>
+                            <th>Price</th>
+                            <th>Manufacturer</th>
+                            <th>Market</th>
+                        </tr>
+                        
+                        <tr>
+                            <td>{{ result1['title'] }}</td>
+                            <td>{{ result1['link'] }}</td>
+                            <td>{{ result1['price'] }}</td>
+                            <td>{{ result1['manufacturer'] }}</td>
+                            <td>JD</td>
+                        </tr>
+                        <tr>
+                            <td>{{ result2[0] }}</td>
+                            <td>{{ result2[5] }}</td>
+                            <td>{{ result2[2] }}</td>
+                            <td>{{ result2[1] }}</td>
+                            <td>WPH</td>
+                        </tr> 
+                    </table> 
+            </div>
+        </div>
+     </div>
 </div>
-
 
 
 

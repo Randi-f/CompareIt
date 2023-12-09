@@ -8,19 +8,25 @@
 </head>
 <body>
     <div class="container">
-        <h1>Registration Result</h1>
-        <div class="result-message">
-            <!-- Display the result message passed from Flask -->
-            {% if message %}
-                <p>{{ message }}</p>
-            {% else %}
-                <p>Unknown result. Please try registering again.</p>
-            {% endif %}
+        <div class="compare-it-header">
+            <h1>Compare<span>It</span></h1>
         </div>
-        <div class="links">
-            <!-- Links to navigate to other pages -->
-            <a href="/register">Try Again</a>
-            <a href="/">Home</a>
+        <div class="regresult-wrapper">
+            <h1 style="text-align: center;">Registration</h1>
+            <!-- <div class="result-message"> -->
+                <div class="result-message" style="text-align: center; margin-top: 30px">
+                <!-- Display the result message passed from Flask -->
+                {% if message %}
+                    <p>{{ message }}</p>
+                {% else %}
+                    <p>Unknown result. Please try registering again.</p>
+                {% endif %}
+            </div>
+            <div class="links">
+                <!-- Links to navigate to other pages -->
+                <a href="/register" style="display: block; text-align: center; margin-top: 20px;">Back to Registration<br></a>
+                <a href="/" style="display: block; text-align: center; margin-top: 10px;">Home</a>
+            </div>
         </div>
     </div>
 </body>
