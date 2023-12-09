@@ -510,6 +510,7 @@ def translate_to_english(content):
         response = httpClient.getresponse()
         result_all = response.read().decode("utf-8")
         result = json.loads(result_all)
+        print(result)
         first_translation = result["trans_result"][0]
         # Access the value associated with the 'dst' key
         dst_value = first_translation["dst"]
