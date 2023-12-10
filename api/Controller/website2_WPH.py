@@ -5,9 +5,7 @@ from openpyxl import Workbook
 
 def send_request_WPH(key_word):
     folder_path = "../vip_res"
-
     os.makedirs(folder_path, exist_ok=True)
-
     headers = {
         "Referer": "https://category.vip.com/",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)",
@@ -36,7 +34,7 @@ def send_request_WPH(key_word):
         "priceMin": "",
         "priceMax": "",
         "vipService": "",
-        "sort": "0",
+        "sort": "1",
         "pageOffset": "0",
         "channelId": "1",
         "gPlatform": "PC",
@@ -90,10 +88,12 @@ def send_request_WPH(key_word):
                 attr,
                 f'https://detail.vip.com/detail-{index["brandId"]}-{index["productId"]}.html',
             ]
-            if len(min_price_row) == 0 or float(row[2]) < float(min_price_row[2]):
-                min_price_row = row
-            sheet.append(row)
+            if len(min_price_row) < 3:
+                min_price_row.append(row)
 
     workbook.save("../vip_res/商品.xlsx")
-    print(min_price_row[0])
+    print(min_price_row)
     return min_price_row
+
+
+send_request_WPH("nike运动鞋")
