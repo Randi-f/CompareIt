@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Display</title>
+    <style>
+        /* 样式化产品展示 */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+        }
+
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .product {
+            width: calc(30% - 20px);
+            margin-bottom: 20px;
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        .product img {
+            max-width: 40%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        /* 新增样式 */
+        .search-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .search-container input[type="text"] {
+            padding: 8px;
+            width: 200px;
+        }
+
+        .search-container input[type="submit"] {
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        .loading {
+            font-size: 5em;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .tags {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .tag {
+            padding: 5px 10px;
+            margin: 0 5px;
+            background-color: #eee;
+        }
+
+        .jd-tag, .wph-tag {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- 新增搜索输入框和按钮 -->
+    <div class="search-container">
+        <form id="searchForm">
+            <input type="text" id="keywordInput" placeholder="输入关键词">
+            <input type="submit" value="search">
+        </form>
+    </div>
+
+    <!-- 六个大问号 -->
+    <div class="loading" id="loading">
+        <div>?</div><div>?</div><div>?</div>
+        <div>?</div><div>?</div><div>?</div>
+    </div>
+
+    <!-- 商品项将会显示在这里 -->
+    <div id="productsContainer" class="product-container" style="display: none;">
+        <!-- 商品项将会显示在这里 -->
+    </div>
+
+    <!-- 京东和唯品会标签 -->
+    <div class="tags">
+        <div class="jd-tag tag">京东</div>
+        <div class="wph-tag tag">唯品会</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchForm = document.getElementById('searchForm');
+            const keywordInput = document.getElementById('keywordInput');
+            const productsContainer = document.getElementById('productsContainer');
+            const loading = document.getElementById('loading');
+            const jdTag = document.querySelector('.jd-tag');
+            const wphTag = document.querySelector('.wph-tag');
+
+            searchForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const keyword = keywordInput.value.trim();
+                
+                // 显示loading，隐藏产品项和标签
+                loading.style.display = 'flex';
+                productsContainer.innerHTML = '';
+                jdTag.style.display = 'none';
+                wphTag.style.display = 'none';
+
+                fetch('/keywordsubmit2', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `keyword=${encodeURIComponent(keyword)}`,
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    loading.style.display = 'none'; // 隐藏loading
+                    const products = data.map((item, index) => {
+                        return {
+                            image: item[3],
+                            title: item[0],
+                            price: item[2],
+                            link: item[5],
+                            index: index // 记录产品位置
+                        };
+                    });
+
+                    products.forEach(product => {
+                        const productItem = document.createElement('div');
+                        productItem.classList.add('product');
+
+                        const imageElement = document.createElement('img');
+                        imageElement.src = product.image;
+                        imageElement.alt = product.title;
+                        imageElement.style.maxWidth = '100%'; // 更新图片尺寸
+
+                        productItem.appendChild(imageElement);
+
+                        const titleElement = document.createElement('h3');
+                        titleElement.textContent = product.title;
+                        productItem.appendChild(titleElement);
+
+                        const priceElement = document.createElement('p');
+                        priceElement.textContent = `price：¥${product.price}`;
+                        productItem.appendChild(priceElement);
+
+                        const linkElement = document.createElement('a');
+                        linkElement.href = product.link;
+                        linkElement.textContent = 'details';
+                        productItem.appendChild(linkElement);
+
+                        // 根据产品位置添加标签
+                        if (product.index < 3) {
+                            const jdTagClone = jdTag.cloneNode(true);
+                            jdTagClone.style.display = 'block';
+                            productItem.insertBefore(jdTagClone, titleElement);
+                        } else {
+                            const wphTagClone = wphTag.cloneNode(true);
+                            wphTagClone.style.display = 'block';
+                            productItem.insertBefore(wphTagClone, titleElement);
+                        }
+
+                        productsContainer.appendChild(productItem);
+                    });
+
+                    // 显示产品项和标签
+                    productsContainer.style.display = 'flex';
+                    jdTag.style.display = 'block'; // 更新标签的显示方式
+                    wphTag.style.display = 'block'; // 更新标签的显示方式
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                    loading.style.display = 'none'; // 隐藏loading
+                });
+            });
+        });
+    </script>
+</body>
+</html>
