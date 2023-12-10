@@ -356,16 +356,13 @@ def send_request_JD(keyword):
 
     ul_list = selector.xpath('//div[@id="J_goodsList"]/ul/li')
     if len(ul_list) == 0:
-        ret = [
-            [
-                "API network error",
-                "-",
-                "-",
-                "https://img-qn.51miz.com/preview/element/00/01/15/79/E-1157992-2ACF8A1A.jpg!/quality/90/unsharp/true/compress/true/format/jpg/fw/720",
-                "none",
-                "-",
-            ]
-        ]
+
+        ret = [['API network error', 
+                '-', 
+                'please try again later', 
+                'https://img-qn.51miz.com/preview/element/00/01/15/79/E-1157992-2ACF8A1A.jpg!/quality/90/unsharp/true/compress/true/format/jpg/fw/720', 
+                'none', 
+                '-']]
         return ret
         products_list.append(
             {
