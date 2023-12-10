@@ -22,7 +22,6 @@ from pip._vendor.distlib.compat import raw_input
 # from Controller.website1_JD import send_request_JD
 # from Controller.website2_WPH import send_request_WPH
 
-
 app = Flask(__name__)
 app.secret_key = "your_unique_and_secret_key"
 

@@ -61,9 +61,7 @@ form.example::after {
   clear: both;
   display: table;
 }
-#myInput {
-    /* background-image: url('https://static.runoob.com/images/mix/searchicon.png');  */
-    
+#myInput {    
     background-position: 10px 12px; /* 定位搜索按钮 */
     background-repeat: no-repeat; /* 不重复图片 */
     width: 100%;
@@ -109,9 +107,9 @@ form.example::after {
     
 </script>
 
-<!-- <div class="navbar">
+<div class="navbar">
     <div class="dropdown">
-        <button class="dropbtn">Menu</button>
+        <button class="dropbtn">Menu ▼</button>
         <div class="dropdown-content">
             <a href="/">Home</a>
             <a href="/login">Log In</a>
@@ -119,20 +117,22 @@ form.example::after {
             <a href="/profile">Profile</a>
             <a href="/compare">CompareIt Search</a>
         </div>
-    </div> -->
+    </div>
 
 <div class="container">
-    <div class="info-wrapper">
-        <!-- <h1>Compare<span style="color: crimson;">It</span></h1> -->
-        <div class="header">Compare It</div>
+    <div class="compare-it-header">
+        <h1>Compare<span>It</span></h1>
+    </div>
+    <ul>
+        <li class="active"><a href="/profile">GO TO PROFILE</a></li>
+    </ul>
+    <div class="info-wrapper" style="overflow: auto;" style="width: 800px;">
+        <div class="header">CompareIt Search</div>
         <div class="form-wrapper">
-            <button onclick="window.location.href='/profile'"> profile </button>
             <form action="/keywordsubmit" method="post">               
                 <!-- keyword:<input type="text" name="keyword" id = "keyword" placeholder="keyword" class="input-item"> -->
-                keyword:<input type="text" name="keyword" id = "keyword" placeholder="keyword" class="fa fa-search">
-                <button type="submit">
-                    <img src="https://static.runoob.com/images/mix/searchicon.png" width="12" alt="图片">
-                </button>
+                Search:<input type="text" name="keyword" id = "keyword" placeholder="keyword" class="fa fa-search">
+                <button type="submit" class="btn">Search</button>
             </form>
 
         </div>
@@ -141,18 +141,11 @@ form.example::after {
                 <tr>
                     <th style="width: 600px;">Item</th>
                     <th style="width: 150px;">Link</th>
-                    <th style="width: 50px;">Price</th>
-                    <th style="width: 100px;">Manufacturer</th>
+                    <th style="width: 70px;">Price</th>
+                    <th style="width: 150px;">Manufacturer</th>
                     <th style="width: 100px;">Market</th>
                 </tr>
                 
-                <tr>
-                    <td style="width: 600px;">{{ result1['title'] }}</td>
-                    <td style="width: 150px;">{{ result1['link'] }}</td>
-                    <td style="width: 50px;">{{ result1['price'] }}</td>
-                    <td style="width: 100px;">{{ result1['manufacturer'] }}</td>
-                    <td style="width: 100px;">JD</td>
-                </tr>
                 <tr>
                     <td style="width: 600px;">{{ result2[0][0] }}</td>
                     <td style="width: 150px;">{{ result2[0][5] }}</td>
@@ -173,6 +166,13 @@ form.example::after {
                     <td style="width: 50px;">{{ result2[2][2] }}</td>
                     <td>{{ result2[2][1] }}</td>
                     <td>WPH</td>
+                </tr>
+                <tr>
+                    <td style="width: 600px;">{{ result1['title'] }}</td>
+                    <td style="width: 150px;">{{ result1['link'] }}</td>
+                    <td style="width: 50px;">{{ result1['price'] }}</td>
+                    <td style="width: 100px;">{{ result1['manufacturer'] }}</td>
+                    <td style="width: 100px;">JD</td>
                 </tr>
 
                 
