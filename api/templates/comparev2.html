@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Product Display</title>
+    <title>CompareIt</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='welcome.css') }}">
+    
     <style>
         /* 样式化产品展示 */
         body {
+            background-image: url('../static/gingerbread.png');
+            /* 使背景图片铺满整个页面 */
+            background-size: cover;
+            /* 设置背景图片位置 */
+            background-position: center;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -35,6 +42,7 @@
 
         /* 新增样式 */
         .search-container {
+            top: 15px;
             margin-top: 20px;
             text-align: center;
         }
@@ -50,11 +58,27 @@
         }
 
         .loading {
-            font-size: 10em;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 30px;
             margin-bottom: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
+            text-align: center;
+            text-align: center;
+            color: #fff;
+            font-family: 'Impact', sans-serif;
+            text-shadow: 
+                -2px -2px 0 black,  
+                2px -2px 0 black,
+                -2px 2px 0 black,
+                2px 2px 0 black;
+            font-family: 'Impact', sans-serif;
+            color: crimson;
+            text-align: center;
         }
 
         .tags {
@@ -76,9 +100,6 @@
     </style>
 </head>
 <body>
-    <!-- 位于 body 结束标签之前 -->
-    <a href="/profile" style="position: absolute; top: 10px; right: 10px; text-decoration: none; color: #000;">Profile</a>
-
     <!-- 新增搜索输入框和按钮 -->
     <div class="search-container">
         <form id="searchForm">
@@ -86,11 +107,14 @@
             <input type="submit" value="Search">
         </form>
     </div>
-
+    
+    <ul>
+        <li class="active"><a href="/profile" style="position: absolute; top: 15px; right: 15px; text-decoration: none;">PROFILE</a></li>
+    </ul>
+    
     <!-- 六个大问号 -->
     <div class="loading" id="loading">
-        <div>?</div><div>?</div><div>?</div>
-        <div>?</div><div>?</div><div>?</div>
+        <h1 style="font-family: 'Impact', sans-serif;"><span class="compare-text" style="color: white; font-family: 'Impact', sans-serif;">Compare<span style="color: crimson; font-family: 'Impact', sans-serif;">It</span></span></h1>
     </div>
 
     <!-- 商品项将会显示在这里 -->
@@ -123,7 +147,7 @@
                 jdTag.style.display = 'none';
                 wphTag.style.display = 'none';
 
-                fetch('/keywordsubmit2', {
+                fetch('/keywordsubmit', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
@@ -138,17 +162,21 @@
                 })
                 .then(data => {
                     loading.style.display = 'none'; // 隐藏loading
-                    const products = data.map((item, index) => {
-                        return {
-                            image: item[3],
-                            title: item[0],
-                            price: item[2],
-                            link: item[5],
-                            index: index // 记录产品位置
-                        };
-                    });
+                    const productsContainers = document.querySelectorAll('.product-container .product');
 
-                    products.forEach(product => {
+                    // 如果已有的产品容器数量小于3，则继续添加新的产品容器
+                    if (productsContainers.length < 3) {
+                        const remainingProducts = data.slice(0, 3 - productsContainers.length).map((item, index) => {
+                            return {
+                                image: item[3],
+                                title: item[0],
+                                price: item[2],
+                                link: item[5],
+                                index: index // 记录产品位置
+                            };
+                        });
+
+                        remainingProducts.forEach(product => {
                         const productItem = document.createElement('div');
                         productItem.classList.add('product');
 
@@ -183,10 +211,9 @@
                             jdTagClone.style.display = 'block';
                             productItem.insertBefore(jdTagClone, titleElement);
                         }
-                            
-
                         productsContainer.appendChild(productItem);
                     });
+                }
 
                     // 显示产品项和标签
                     productsContainer.style.display = 'flex';
