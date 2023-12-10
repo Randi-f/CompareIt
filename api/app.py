@@ -62,7 +62,7 @@ def keywordsubmit():
 
 # compare page for the app
 @app.route("/keywordsubmit2", methods=["POST"])
-def keywordsubmit():
+def keywordsubmit2():
     keyword = request.form.get('keyword')
     res=send_request_WPH(keyword)
     if len(res)==3:
@@ -253,8 +253,11 @@ def send_verification_email(receiver_mail, verification_token, user_id):
 
     # Construct the email message
     subject = "Please verify your email"
+    # verification_link = (
+    #     f"http://127.0.0.1:5000/verify_email/{verification_token}"  # check email!!
+    # )
     verification_link = (
-        f"http://127.0.0.1:5000/verify_email/{verification_token}"  # check email!!
+        f"https://compare-it-lyart.vercel.app/verify_email/{verification_token}"  # check email!!
     )
     message = (
         f"Welcome to CompareIt! \n\n Thank you for signing up! Your user id is: {user_id}."
