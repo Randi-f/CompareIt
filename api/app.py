@@ -20,10 +20,7 @@ import json
 from pip._vendor.distlib.compat import raw_input
 
 # from Controller.website1_JD import send_request_JD
-# from website1_JD import send_request_JD
-
 # from Controller.website2_WPH import send_request_WPH
-# from website2_WPH import send_request_WPH
 
 
 app = Flask(__name__)
@@ -58,14 +55,14 @@ def keywordsubmit():
     keyword = request.form.get("keyword")
     products_list = send_request_JD(keyword)
     res=[]
-    result2 = send_request_WPH(res,keyword)
+    result2 = send_request_WPH(keyword)
     return render_template("compare.html", result1=products_list[0], result2=result2)
 
 # compare page for the app
 @app.route('/keywordsubmit2', methods=['POST'])
 def keywordsubmit2():
     keyword = request.form.get('keyword')
-    res=send_request_WPH(res,keyword)
+    res=send_request_WPH(keyword)
     if len(res)==3:
         return jsonify(res) 
     else:
@@ -380,7 +377,7 @@ def send_request_JD(keyword):
 
 
 # function send request to WPH
-def send_request_WPH(min_price_row,key_word):
+def send_request_WPH(key_word):
     # folder_path = "../vip_res"
     # os.makedirs(folder_path, exist_ok=True)
     headers = {
@@ -428,7 +425,7 @@ def send_request_WPH(min_price_row,key_word):
     # header = ["标题", "品牌", "售价", "图片", "商品信息", "详情页"]
     # sheet.append(header)
 
-    # min_price_row = []
+    min_price_row = []
     for i in range(0, len(products), 50):
         product_id = ",".join(products[i : i + 50])
         link = (
