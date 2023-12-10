@@ -1,3 +1,9 @@
+<!--
+ * @Author: shihan
+ * @Date: 2023-12-10 12:45:04
+ * @version: 1.0
+ * @description: 
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,7 +48,7 @@
                     if (response.ok) {
                         alert(responseData.message); // 显示成功信息
                         // 进行登录成功后的操作，比如页面跳转等
-                        window.location.href = '/compare';
+                        window.location.href = '/comparev2';
                     } else {
                         alert(responseData.message); // 显示错误信息
                         document.getElementById('user_id').value = ''; // 清空用户名和密码字段

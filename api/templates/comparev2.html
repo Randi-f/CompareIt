@@ -169,8 +169,8 @@
                     const productsContainers = document.querySelectorAll('.product-container .product');
 
                     // 如果已有的产品容器数量小于3，则继续添加新的产品容器
-                    if (productsContainers.length < 3) {
-                        const remainingProducts = data.slice(0, 3 - productsContainers.length).map((item, index) => {
+                    if (productsContainers.length < 4) {
+                        const remainingProducts = data.slice(0, 4 - productsContainers.length).map((item, index) => {
                             return {
                                 image: item[3],
                                 title: item[0],

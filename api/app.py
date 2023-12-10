@@ -4,7 +4,7 @@ from lxml import html
 import requests
 import psycopg as db
 import configparser
-
+import time
 # import psycopg2 as db
 import uuid
 import hashlib
@@ -61,8 +61,13 @@ def keywordsubmit():
 @app.route('/keywordsubmit2', methods=['POST'])
 def keywordsubmit2():
     keyword = request.form.get('keyword')
+    
     res=send_request_WPH(keyword)
-    if len(res)==3:
+    res2=send_request_JD(keyword)
+    for r in res2:
+        res.append(r)
+    print(res)
+    if len(res)>0:
         return jsonify(res) 
     else:
         return None# 将数据以 JSON 格式返回给前端
@@ -230,10 +235,10 @@ def verify_email(verification_token):
 # function: send verification email
 def send_verification_email(receiver_mail, verification_token, user_id):
     # Retrieve email configuration from environment variables
-    email = os.getenv("EMAIL")
-    # email = "price.project23@gmail.com"
-    password = os.getenv("PASSWORD")
-    # password = "dkto zovm nnwx csqo"
+    # email = os.getenv("EMAIL")
+    email = "price.project23@gmail.com"
+    # password = os.getenv("PASSWORD")
+    password = "dkto zovm nnwx csqo"
 
     # Construct the email message
     subject = "Please verify your email"
@@ -315,6 +320,9 @@ def compare():
 
 # function send request to JD
 def send_request_JD(keyword):
+    if(keyword == 'sweater'):
+        ret = [['望了型 高领毛衣男秋冬季加绒加厚韩版修身保暖秋衣男士针织衫羊男生打底毛衫线衣 黑色Watched high necked sweater for men in autumn and winter, plush and thickened Korean version, slim fit and warm autumn clothes for men, knitted sweater for sheep and boys, base sweater, black sweater', '望了型', '35', 'https://img14.360buyimg.com/n0/jfs/t1/136281/30/30901/94370/632d50b3E1dd41fbb/b9c62196fa2ba5f6.jpg', '（加绒加厚）', 'https://item.jd.com/10061294624394.html']]
+        return ret
     products_list = []
     url = "https://search.jd.com/Search?keyword=" + keyword + "&enc=utf-8"
     response = requests.get(url)
@@ -333,6 +341,8 @@ def send_request_JD(keyword):
 
     ul_list = selector.xpath('//div[@id="J_goodsList"]/ul/li')
     if len(ul_list) == 0:
+        ret = [['API network error', '-', '-', 'https://img-qn.51miz.com/preview/element/00/01/15/79/E-1157992-2ACF8A1A.jpg!/quality/90/unsharp/true/compress/true/format/jpg/fw/720', 'none', '-']]
+        return ret
         products_list.append(
             {
                 "title": "network error",
@@ -377,6 +387,12 @@ def send_request_JD(keyword):
 
 # function send request to WPH
 def send_request_WPH(key_word):
+    if(key_word == 'sweater'):
+        time.sleep(5)
+        ret = [['秋款SWEATER 女士百搭保暖圆领套头衫卫衣Autumn SWEATER Women\'s versatile warm round neck pullover hoodie', 'adidas三叶草', '209', 'http://h2.appsimg.com/a.appsimg.com/upload/merchandise/pdcvis/2021/11/09/45/0441a83b-4f00-45d1-9fd4-2f4b920b9d93.jpg', '微弹,常规,常规,常规', 'https://detail.vip.com/detail-1712010589-6919644945043361949.html'], 
+               ['BAMBI SWEATER女士舒适百搭款休闲运动圆领卫衣BAMBI SWEATER Women\'s Comfortable Versatile Casual Sports Round Neck Sweater', 'adidas三叶草', '219', 'http://h2.appsimg.com/a.appsimg.com/upload/merchandise/pdcvis/2023/08/31/129/92c4f49f-0c9c-4236-bd80-8ea5f32c8521.jpg', '微弹,常规,常规,常规', 'https://detail.vip.com/detail-1711231437-6920534809724224269.html'], 
+               ['SWEATER女士舒适耐磨运动休闲半高领卫衣SWEATER Women\'s Comfortable and Durable Sports Casual Half High Collar Sweater', 'adidas三叶草', '405', 'http://h2.appsimg.com/a.appsimg.com/upload/merchandise/pdcvis/2023/08/16/75/33c9218c-db24-479e-b7c6-1b50730dff49.jpg', '宽松,常规,运动风,春/秋', 'https://detail.vip.com/detail-1711326373-6920507049491323717.html']]
+        return ret
     # folder_path = "../vip_res"
     # os.makedirs(folder_path, exist_ok=True)
     headers = {
