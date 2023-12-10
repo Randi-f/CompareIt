@@ -27,6 +27,7 @@
         }
 
         .product {
+            background-color: #fff;
             width: calc(30% - 20px);
             margin-bottom: 20px;
             text-align: center;
@@ -100,17 +101,20 @@
     </style>
 </head>
 <body>
-    <!-- 新增搜索输入框和按钮 -->
+    <!-- 位于 body 结束标签之前
+    <a href="/profile" style="background-color:#fff; color:#000; position: absolute; top: 15px; right: 15px; text-decoration: none; color: #000;">Profile</a> -->
     <div class="search-container">
         <form id="searchForm">
             <input type="text" id="keywordInput" placeholder="Enter Keyword">
             <input type="submit" value="Search">
         </form>
     </div>
-    
+
     <ul>
         <li class="active"><a href="/profile" style="position: absolute; top: 15px; right: 15px; text-decoration: none;">PROFILE</a></li>
     </ul>
+    <!-- 新增搜索输入框和按钮 -->
+    
     
     <!-- 六个大问号 -->
     <div class="loading" id="loading">
