@@ -63,7 +63,7 @@ def keywordsubmit():
 
 # compare page for the app
 @app.route('/keywordsubmit2', methods=['POST'])
-def keywordsubmit():
+def keywordsubmit2():
     keyword = request.form.get('keyword')
     res=send_request_WPH(keyword)
     if len(res)==3:
