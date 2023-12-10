@@ -168,7 +168,7 @@ a {
 }
 
 .table-container {
-    max-height: 500px; /* 设置表格容器的最大高度 */
+    max-height: 400px; /* 设置表格容器的最大高度 */
     max-width: 900px; /* 设置表格容器的最大宽度 */
     overflow-x: auto; /* 设置X轴方向上出现滚动条 */
     overflow-y: auto; /* 设置Y轴方向上出现滚动条 */
@@ -180,11 +180,11 @@ table {
     border-collapse: collapse; /* 合并表格边框 */
 }
 
-th, td {
+/* th, td {
     border: 1px solid #ccc; /* 设置单元格边框样式 */
-    padding: 10px; /* 设置单元格内边距 */
-    text-align: left; /* 设置文本左对齐 */
-}
+    /* padding: 10px; 设置单元格内边距 */
+    /* text-align: left; 设置文本左对齐 */
+/* } */ 
 
 .light {
     position: relative;
