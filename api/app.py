@@ -57,24 +57,20 @@ def hello_world():
 def keywordsubmit():
     keyword = request.form.get("keyword")
     products_list = send_request_JD(keyword)
-    result2 = send_request_WPH(keyword)
+    res=[]
+    result2 = send_request_WPH(res,keyword)
     return render_template("compare.html", result1=products_list[0], result2=result2)
 
 # compare page for the app
 @app.route("/keywordsubmit2", methods=["POST"])
 def keywordsubmit2():
     keyword = request.form.get('keyword')
-    res=send_request_WPH(keyword)
-    if len(res)==3:
+    res=[]
+    # row = ["Network issue","JD","-","no image","-","-","-"]
+    # res.append(row)
+    res=send_request_WPH(res,keyword)
+    if len(res)>=3:
         return jsonify(res)
-
-# @app.route('/get_data')
-# def get_data():
-#     # if request.method == 'POST':
-#     #     key_word = request.form['keyword']
-#     key_word = "t shirt"
-#     data = send_request_WPH(key_word)
-#     return jsonify(data)
 
 
 @app.route("/comparev2")
@@ -392,7 +388,7 @@ def send_request_JD(keyword):
 
 
 # function send request to WPH
-def send_request_WPH(key_word):
+def send_request_WPH(min_price_row,key_word):
     # folder_path = "../vip_res"
     # os.makedirs(folder_path, exist_ok=True)
     headers = {
@@ -440,7 +436,7 @@ def send_request_WPH(key_word):
     # header = ["标题", "品牌", "售价", "图片", "商品信息", "详情页"]
     # sheet.append(header)
 
-    min_price_row = []
+    # min_price_row = []
     for i in range(0, len(products), 50):
         product_id = ",".join(products[i : i + 50])
         link = (
