@@ -65,7 +65,7 @@ def keywordsubmit():
 @app.route('/keywordsubmit2', methods=['POST'])
 def keywordsubmit2():
     keyword = request.form.get('keyword')
-    res=send_request_WPH(keyword)
+    res=send_request_WPH(res,keyword)
     if len(res)==3:
         return jsonify(res) 
     else:
