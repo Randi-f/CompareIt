@@ -1,5 +1,6 @@
 import psycopg as db
 import configparser
+
 """
 Author: shihan
 Date: 2023-12-07 21:37:25
