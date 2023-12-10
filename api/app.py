@@ -62,11 +62,12 @@ def keywordsubmit():
 
 # compare page for the app
 @app.route("/keywordsubmit2", methods=["POST"])
-def keywordsubmit2():
-    if request.method == 'POST':
-        key_word = request.form['keyword']
-        data = send_request_WPH(key_word)
-        return jsonify(data)
+def keywordsubmit():
+    keyword = request.form.get('keyword')
+    res=send_request_WPH(keyword)
+    if len(res)==3:
+        return jsonify(res)
+
 # @app.route('/get_data')
 # def get_data():
 #     # if request.method == 'POST':
