@@ -62,26 +62,18 @@ def keywordsubmit():
     return render_template("compare.html", result1=products_list[0], result2=result2)
 
 # compare page for the app
-@app.route("/keywordsubmit2", methods=["POST"])
-def keywordsubmit2():
+@app.route('/keywordsubmit2', methods=['POST'])
+def keywordsubmit():
     keyword = request.form.get('keyword')
-    res=[]
-    # row = ["Network issue","JD","-","no image","-","-","-"]
-    # res.append(row)
-    res=send_request_WPH(res,keyword)
-    if len(res)>=3:
-        return jsonify(res)
-
+    res=send_request_WPH(keyword)
+    if len(res)==3:
+        return jsonify(res) 
+    else:
+        return None# 将数据以 JSON 格式返回给前端
 
 @app.route("/comparev2")
 def comparev2():
-    # if request.method == 'POST':
-    #     key_word = request.form['keyword']
-    # key_word = "t shirt"
-    # data = send_request_WPH(key_word)
     return render_template("comparev2.html")
-    # return jsonify(data)
-
 
 # login page
 @app.route("/login")
