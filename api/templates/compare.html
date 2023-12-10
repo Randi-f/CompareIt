@@ -1,11 +1,6 @@
 <!--
- * @Description: 
- * @Version: 
- * @Author: fsh
- * @Date: 2023-04-13 18:43:45
-
- * @LastEditTime: 2023-12-10 21:57:08
-
+    * @Author: Nicole Audia, Karen Chave, Nikki Luo, Shihan Fu, Xiaotian Zhang
+    * @LastEditTime: 2023-12-10 21:57:08
 -->
 <!DOCTYPE HTML>
 <html>
@@ -19,8 +14,8 @@
 table{
     width:600px; 
     height: 400px;
-border-collapse:collapse; 
-text-align:center;
+    border-collapse:collapse; 
+    text-align:center;
 }
 td,th{
     border: 1px solid black; 
@@ -115,23 +110,25 @@ form.example::after {
             <a href="/login">Log In</a>
             <a href="/register">Register</a>
             <a href="/profile">Profile</a>
-            <a href="/compare">CompareIt Search</a>
+            <a href="/compare">CompareIt Search (v1)</a>
+            <a href="/comparev2">CompareIt Search (v2)</a>
         </div>
     </div>
+
 
 <div class="container">
     <div class="compare-it-header">
         <h1>Compare<span>It</span></h1>
     </div>
-    <ul>
+    <!-- <ul>
         <li class="active"><a href="/profile">GO TO PROFILE</a></li>
-    </ul>
+    </ul> -->
     <div class="info-wrapper" style="overflow: auto;" style="width: 800px;">
         <div class="header">CompareIt Search</div>
         <div class="form-wrapper">
 
-            <button onclick="window.location.href='/profile'"> profile </button>
-            <button onclick="window.location.href='/comparev2'"> search on WPH </button>
+            <!-- <button onclick="window.location.href='/profile'"> profile </button> -->
+            <!-- <button onclick="window.location.href='/comparev2'"> search on WPH </button> -->
             <form action="/keywordsubmit" method="post">               
                 <!-- keyword:<input type="text" name="keyword" id = "keyword" placeholder="keyword" class="input-item"> -->
                 Search:<input type="text" name="keyword" id = "keyword" placeholder="keyword" class="fa fa-search">

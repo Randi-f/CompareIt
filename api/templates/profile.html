@@ -1,8 +1,7 @@
 <!--
- * @Author: shihan
+ * @Author: Nicole Audia, Karen Chave, Nikki Luo, Shihan Fu, Xiaotian Zhang
  * @Date: 2023-11-30 17:22:35
  * @version: 1.0
- * @description: 
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -10,18 +9,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
-    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> -->
     <link rel="stylesheet" href="{{ url_for('static',filename='welcome.css') }}">
     <link rel="icon" href="data:,">
 </head>
 <body>
+    <div class="navbar">
+        <div class="dropdown">
+            <button class="dropbtn">Menu ▼</button>
+            <div class="dropdown-content">
+                <a href="/">Home</a>
+                <a href="/login">Log In</a>
+                <a href="/register">Register</a>
+                <a href="/profile">Profile</a>
+                <a href="/compare">CompareIt Search (v1)</a>
+                <a href="/comparev2">CompareIt Search (v2)</a>
+            </div>
+        </div>
     <div class="container">
         <div class="compare-it-header">
             <h1>Compare<span>It</span></h1>
         </div>
-        <ul>
+        <!-- <ul>
             <li class="active"><a href="/compare">GO TO SEARCH PAGE</a></li>
-        </ul>
+        </ul> -->
         <div class="info-wrapper" style="height: 400px">
             <div class="header">User Profile</div>
             <div class="form-wrapper">
@@ -49,14 +59,6 @@
             </div>
         </div>
     </div>
-
-    <!-- <header>
-        <h1>User Profile</h1>
-    </header>
-    
-    <footer>
-        <p>&copy; 2023 Your Website</p>
-    </footer> -->
 </body>
 </html>
 

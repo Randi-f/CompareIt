@@ -101,8 +101,20 @@
     </style>
 </head>
 <body>
-    <!-- 位于 body 结束标签之前
-    <a href="/profile" style="background-color:#fff; color:#000; position: absolute; top: 15px; right: 15px; text-decoration: none; color: #000;">Profile</a> -->
+   
+    <div class="navbar">
+        <div class="dropdown">
+            <button class="dropbtn">Menu ▼</button>
+            <div class="dropdown-content">
+                <a href="/">Home</a>
+                <a href="/login">Log In</a>
+                <a href="/register">Register</a>
+                <a href="/profile">Profile</a>
+                <a href="/compare">CompareIt Search (v1)</a>
+                <a href="/comparev2">CompareIt Search (v2)</a>
+            </div>
+        </div>
+    </div>
     <div class="search-container">
         <form id="searchForm">
             <input type="text" id="keywordInput" placeholder="Enter Keyword">
@@ -111,7 +123,7 @@
     </div>
 
     <ul>
-        <li class="active"><a href="/profile" style="position: absolute; top: 15px; right: 15px; text-decoration: none;">PROFILE</a></li>
+        <!-- <li class="active"><a href="/profile" style="position: absolute; top: 15px; right: 15px; text-decoration: none;">PROFILE</a></li> -->
     </ul>
     <!-- 新增搜索输入框和按钮 -->
     
