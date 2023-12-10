@@ -28,7 +28,7 @@
 
         .product {
             background-color: #fff;
-            width: calc(30% - 20px);
+            width: calc(40% - 20px);
             margin-bottom: 20px;
             text-align: center;
             padding: 10px;
@@ -50,7 +50,7 @@
 
         .search-container input[type="text"] {
             padding: 8px;
-            width: 200px;
+            width: 300px;
         }
 
         .search-container input[type="submit"] {
@@ -98,11 +98,20 @@
         .jd-tag, .wph-tag {
             display: none;
         }
+
+        .navbar {
+            position: absolute;
+            top: 10px; /* 距离顶部的距离，可以根据需要调整 */
+            right: 10px; /* 距离右侧的距离，可以根据需要调整 */
+        }
+
+/* 其他样式属性，例如背景颜色、边框等 */
+
     </style>
 </head>
 <body>
    
-    <div class="navbar">
+    <div class="navbar" id="myNavbar">
         <div class="dropdown">
             <button class="dropbtn">Menu ▼</button>
             <div class="dropdown-content">
@@ -115,6 +124,7 @@
             </div>
         </div>
     </div>
+
     <div class="search-container">
         <form id="searchForm">
             <input type="text" id="keywordInput" placeholder="Enter Keyword">
@@ -146,6 +156,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const menu = document.getElementById('myNavbar');
             const searchForm = document.getElementById('searchForm');
             const keywordInput = document.getElementById('keywordInput');
             const productsContainer = document.getElementById('productsContainer');
