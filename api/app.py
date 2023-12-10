@@ -31,9 +31,19 @@ app.secret_key = "your_unique_and_secret_key"
 
 
 def get_db_connection():
-    config = configparser.ConfigParser()
-    config.read("dbtool.ini")
-    return db.connect(**config["connection"])
+    # config = configparser.ConfigParser()
+    # config.read("dbtool.ini")
+    server_params = {
+        "dbname": "sf23",
+        "host": "db.doc.ic.ac.uk",
+        "port": "5432",
+        "user": "sf23",
+        "password": "3048=N35q4nEsm",
+        "client_encoding": "utf-8",
+    }
+
+    return db.connect(**server_params)
+    # return db.connect(**config["connection"])
 
 
 # home page for the app
