@@ -50,7 +50,13 @@ def keywordsubmit():
     result2 = send_request_WPH(keyword)
     return render_template("compare.html", result1=products_list[0], result2=result2)
 
-
+# compare page for the app
+@app.route("/keywordsubmit2", methods=["POST"])
+def keywordsubmit2():
+    if request.method == 'POST':
+        key_word = request.form['keyword']
+        data = send_request_WPH(key_word)
+        return jsonify(data)
 # @app.route('/get_data')
 # def get_data():
 #     # if request.method == 'POST':
@@ -304,7 +310,8 @@ def profile():
 # compare page
 @app.route("/compare")
 def compare():
-    return render_template("compare.html", result1={}, result2={})
+    result2=[['?','?','?','?','?'],['?','?','?','?','?'],['?','?','?','?','?']]
+    return render_template("compare.html", result1={}, result2=result2)
 
 
 # function send request to JD
@@ -373,7 +380,6 @@ def send_request_JD(keyword):
 def send_request_WPH(key_word):
     # folder_path = "../vip_res"
     # os.makedirs(folder_path, exist_ok=True)
-
     headers = {
         "Referer": "https://category.vip.com/",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)",
@@ -402,7 +408,7 @@ def send_request_WPH(key_word):
         "priceMin": "",
         "priceMax": "",
         "vipService": "",
-        "sort": "0",
+        "sort": "1",
         "pageOffset": "0",
         "channelId": "1",
         "gPlatform": "PC",
@@ -413,11 +419,11 @@ def send_request_WPH(key_word):
     response = requests.get(url=url, params=data, headers=headers)
     products = [i["pid"] for i in response.json()["data"]["products"]]
 
-    workbook = Workbook()
-    sheet = workbook.active
+    # workbook = Workbook()
+    # sheet = workbook.active
 
-    header = ["标题", "品牌", "售价", "图片", "商品信息", "详情页"]
-    sheet.append(header)
+    # header = ["标题", "品牌", "售价", "图片", "商品信息", "详情页"]
+    # sheet.append(header)
 
     min_price_row = []
     for i in range(0, len(products), 50):
@@ -456,17 +462,24 @@ def send_request_WPH(key_word):
                 attr,
                 f'https://detail.vip.com/detail-{index["brandId"]}-{index["productId"]}.html',
             ]
-            if len(min_price_row) == 0 or float(row[2]) < float(min_price_row[2]):
-                min_price_row = row
-            sheet.append(row)
+            if len(min_price_row) < 3:
+                min_price_row.append(row)
 
     # workbook.save("../vip_res/商品.xlsx")
-    print("最低价商品" + min_price_row[0])
-    translated = translate_to_english(min_price_row[0])
-    print(translated)
-    min_price_row[0] += str(translated)
     print(min_price_row)
+    for i in range(3):
+        translated = translate_to_english(min_price_row[i][0])
+        print(translated)
+        min_price_row[i][0] += str(translated)
+        print(min_price_row[i][0])
     return min_price_row
+    # workbook.save("../vip_res/商品.xlsx")
+    # print("最低价商品" + min_price_row[0])
+    # translated = translate_to_english(min_price_row[0])
+    # print(translated)
+    # min_price_row[0] += str(translated)
+    # print(min_price_row)
+    # return min_price_row
 
 
 def translate_to_english(content):
