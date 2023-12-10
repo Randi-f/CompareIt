@@ -50,7 +50,7 @@
         }
 
         .loading {
-            font-size: 5em;
+            font-size: 10em;
             margin-bottom: 20px;
             display: flex;
             justify-content: center;
@@ -76,11 +76,14 @@
     </style>
 </head>
 <body>
+    <!-- 位于 body 结束标签之前 -->
+    <a href="/profile" style="position: absolute; top: 10px; right: 10px; text-decoration: none; color: #000;">Profile</a>
+
     <!-- 新增搜索输入框和按钮 -->
     <div class="search-container">
         <form id="searchForm">
-            <input type="text" id="keywordInput" placeholder="输入关键词">
-            <input type="submit" value="search">
+            <input type="text" id="keywordInput" placeholder="Enter Keyword">
+            <input type="submit" value="Search">
         </form>
     </div>
 
@@ -97,8 +100,8 @@
 
     <!-- 京东和唯品会标签 -->
     <div class="tags">
-        <div class="jd-tag tag">京东</div>
-        <div class="wph-tag tag">唯品会</div>
+        <div class="jd-tag tag">JingDong</div>
+        <div class="wph-tag tag">WeiPinHui</div>
     </div>
 
     <script>
@@ -120,7 +123,7 @@
                 jdTag.style.display = 'none';
                 wphTag.style.display = 'none';
 
-                fetch('/keywordsubmit2', {
+                fetch('/keywordsubmit', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
@@ -152,7 +155,7 @@
                         const imageElement = document.createElement('img');
                         imageElement.src = product.image;
                         imageElement.alt = product.title;
-                        imageElement.style.maxWidth = '100%'; // 更新图片尺寸
+                        imageElement.style.maxWidth = '70%'; // 更新图片尺寸
 
                         productItem.appendChild(imageElement);
 
@@ -161,32 +164,34 @@
                         productItem.appendChild(titleElement);
 
                         const priceElement = document.createElement('p');
-                        priceElement.textContent = `price：¥${product.price}`;
+                        priceElement.textContent = `Price：${product.price} RMB`;
                         productItem.appendChild(priceElement);
 
                         const linkElement = document.createElement('a');
                         linkElement.href = product.link;
-                        linkElement.textContent = 'details';
+                        linkElement.textContent = 'The Details';
                         productItem.appendChild(linkElement);
 
                         // 根据产品位置添加标签
                         if (product.index < 3) {
-                            const jdTagClone = jdTag.cloneNode(true);
-                            jdTagClone.style.display = 'block';
-                            productItem.insertBefore(jdTagClone, titleElement);
-                        } else {
                             const wphTagClone = wphTag.cloneNode(true);
                             wphTagClone.style.display = 'block';
                             productItem.insertBefore(wphTagClone, titleElement);
                         }
+                        else {
+                            const jdTagClone = jdTag.cloneNode(true);
+                            jdTagClone.style.display = 'block';
+                            productItem.insertBefore(jdTagClone, titleElement);
+                        }
+                            
 
                         productsContainer.appendChild(productItem);
                     });
 
                     // 显示产品项和标签
                     productsContainer.style.display = 'flex';
-                    jdTag.style.display = 'block'; // 更新标签的显示方式
-                    wphTag.style.display = 'block'; // 更新标签的显示方式
+                    jdTag.style.display = 'none'; // 更新标签的显示方式
+                    wphTag.style.display = 'none'; // 更新标签的显示方式
                 })
                 .catch(error => {
                     console.error('There was a problem with the fetch operation:', error);
