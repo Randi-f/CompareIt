@@ -56,7 +56,7 @@ def keywordsubmit():
     products_list = send_request_JD(keyword)
     res = []
     result2 = send_request_WPH(keyword)
-    return render_template("compare.html", result1=products_list[0], result2=result2)
+    return render_template("compare.html", result1=products_list, result2=result2)
 
 
 # compare page for the app
@@ -316,16 +316,20 @@ def profile():
 # compare page
 @app.route("/compare")
 def compare():
+    result1 = [
+        ["?","?","?","?","?"]
+    ]
     result2 = [
         ["?", "?", "?", "?", "?"],
         ["?", "?", "?", "?", "?"],
         ["?", "?", "?", "?", "?"],
     ]
-    return render_template("compare.html", result1={}, result2=result2)
+    return render_template("compare.html", result1=result1, result2=result2)
 
 
 # function send request to JD
 def send_request_JD(keyword):
+    # some frequent words can be stored
     if keyword == "sweater":
         ret = [
             [
@@ -335,6 +339,31 @@ def send_request_JD(keyword):
                 "https://img14.360buyimg.com/n0/jfs/t1/136281/30/30901/94370/632d50b3E1dd41fbb/b9c62196fa2ba5f6.jpg",
                 "（加绒加厚）",
                 "https://item.jd.com/10061294624394.html",
+            ]
+        ]
+        return ret
+    if "shirt" in keyword:
+        ret = [
+            [
+                "畅登 短袖t恤男夏季宽松圆领卡通印花五分袖T恤潮百搭半袖学生上衣服Changdeng short-sleeved T-shirt men's summer loose round neck cartoon printed five-quarter sleeve T-shirt trendy versatile half-sleeved student tops",
+                "畅登",
+                "17",
+                "https://img14.360buyimg.com/n0/jfs/t1/216924/32/15608/135408/62397f0dE7af14933/45faad5764c11018.jpg.avif",
+                "孔雀蓝 L",
+                "https://item.jd.com/29979454936.html",
+            ]
+        ]
+        return ret
+    if "nike" in keyword:
+        #  CZ5847-100
+        ret = [
+            [
+                "nikeNike耐克2021春秋新款男鞋DROP-TYPE运动休闲鞋板鞋CZ5847-100nikeNike 2021 spring and autumn new men's shoes DROP-TYPE sports and casual shoes CZ5847-100"
+                "耐克",
+                "159",
+                "https://img14.360buyimg.com/n0/jfs/t1/234125/7/7113/80164/657468deF4cbe85c8/514963e3c4579b64.jpg.avif",
+                "主图款 44.5",
+                "https://item.jd.com/10020315162111.html",
             ]
         ]
         return ret
@@ -374,6 +403,7 @@ def send_request_JD(keyword):
             }
         )
         return products_list
+    ret = []
     for li in ul_list:
         title = li.xpath(
             'div/div[@class="p-name p-name-type-2"]/a/em/text() | '
@@ -393,15 +423,17 @@ def send_request_JD(keyword):
         store = li.xpath(
             'div/div[@class="p-shop"]//a/text() | ' 'div//a[@class="curr-shop"]/@title'
         )
-        products_list.append(
-            {
-                "title": title[0],
-                "price": price[0],
-                "link": "https:" + link[0],
-                "store": store[0],
-                "referer": "JD",
-            }
-        )
+        row = [title[0],store[0],price[0],'https://img-qn.51miz.com/preview/element/00/01/15/79/E-1157992-2ACF8A1A.jpg!/quality/90/unsharp/true/compress/true/format/jpg/fw/720','normal',"https:" + link[0]]
+        # products_list.append(
+        #     {
+        #         "title": title[0],
+        #         "price": price[0],
+        #         "link": "https:" + link[0],
+        #         "store": store[0],
+        #         "referer": "JD",
+        #     }
+        # )
+        products_list.append(row)
 
     return products_list
 
