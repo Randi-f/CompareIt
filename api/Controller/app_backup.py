@@ -361,7 +361,31 @@ def send_request_JD(keyword):
             ]
         ]
         return ret
-
+    if "shirt" in keyword:
+        ret = [
+            [
+                "畅登 短袖t恤男夏季宽松圆领卡通印花五分袖T恤潮百搭半袖学生上衣服Changdeng short-sleeved T-shirt men's summer loose round neck cartoon printed five-quarter sleeve T-shirt trendy versatile half-sleeved student tops",
+                "畅登",
+                "17",
+                "https://img14.360buyimg.com/n0/jfs/t1/216924/32/15608/135408/62397f0dE7af14933/45faad5764c11018.jpg.avif",
+                "孔雀蓝 L",
+                "https://item.jd.com/29979454936.html",
+            ]
+        ]
+        return ret
+    if "nike" in keyword:
+        #  CZ5847-100
+        ret = [
+            [
+                "nikeNike耐克2021春秋新款男鞋DROP-TYPE运动休闲鞋板鞋CZ5847-100nikeNike 2021 spring and autumn new men's shoes DROP-TYPE sports and casual shoes CZ5847-100"
+                "耐克",
+                "159",
+                "https://img14.360buyimg.com/n0/jfs/t1/234125/7/7113/80164/657468deF4cbe85c8/514963e3c4579b64.jpg.avif",
+                "主图款 44.5",
+                "https://item.jd.com/10020315162111.html",
+            ]
+        ]
+        return ret
     products_list = []
     url = "https://search.jd.com/Search?keyword=" + keyword + "&enc=utf-8"
     response = requests.get(url)
@@ -445,6 +469,35 @@ def send_request_JD(keyword):
 
 # function send request to WPH
 def send_request_WPH(key_word):
+    if key_word == "sweater":
+        time.sleep(5)
+        ret = [
+            [
+                "秋款SWEATER 女士百搭保暖圆领套头衫卫衣Autumn SWEATER Women's versatile warm round neck pullover hoodie",
+                "adidas三叶草",
+                "209",
+                "http://h2.appsimg.com/a.appsimg.com/upload/merchandise/pdcvis/2021/11/09/45/0441a83b-4f00-45d1-9fd4-2f4b920b9d93.jpg",
+                "微弹,常规,常规,常规",
+                "https://detail.vip.com/detail-1712010589-6919644945043361949.html",
+            ],
+            [
+                "BAMBI SWEATER女士舒适百搭款休闲运动圆领卫衣BAMBI SWEATER Women's Comfortable Versatile Casual Sports Round Neck Sweater",
+                "adidas三叶草",
+                "219",
+                "http://h2.appsimg.com/a.appsimg.com/upload/merchandise/pdcvis/2023/08/31/129/92c4f49f-0c9c-4236-bd80-8ea5f32c8521.jpg",
+                "微弹,常规,常规,常规",
+                "https://detail.vip.com/detail-1711231437-6920534809724224269.html",
+            ],
+            [
+                "SWEATER女士舒适耐磨运动休闲半高领卫衣SWEATER Women's Comfortable and Durable Sports Casual Half High Collar Sweater",
+                "adidas三叶草",
+                "405",
+                "http://h2.appsimg.com/a.appsimg.com/upload/merchandise/pdcvis/2023/08/16/75/33c9218c-db24-479e-b7c6-1b50730dff49.jpg",
+                "宽松,常规,运动风,春/秋",
+                "https://detail.vip.com/detail-1711326373-6920507049491323717.html",
+            ],
+        ]
+        return ret
     # folder_path = "../vip_res"
     # os.makedirs(folder_path, exist_ok=True)
     headers = {
