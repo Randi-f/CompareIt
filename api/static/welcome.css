@@ -398,7 +398,7 @@ overflow: hidden;
 }
 
 .dropdown {
-/* position: relative; */
+position: fixed;
 float: left;
 overflow: hidden;
 }
