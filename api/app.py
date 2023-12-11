@@ -30,13 +30,19 @@ app.secret_key = "your_unique_and_secret_key"
 def get_db_connection():
     # config = configparser.ConfigParser()
     # config.read("dbtool.ini")
+    dbname = os.getenv("dbname")
+    host = os.getenv("host")
+    port = os.getenv("5432")
+    user = os.getenv("user")
+    password = os.getenv("password")
+    client_encoding = "utf-8"
     server_params = {
-        "dbname": "sf23",
-        "host": "db.doc.ic.ac.uk",
-        "port": "5432",
-        "user": "sf23",
-        "password": "3048=N35q4nEsm",
-        "client_encoding": "utf-8",
+        "dbname": dbname,
+        "host": host,
+        "port": port,
+        "user": user,
+        "password": password,
+        "client_encoding": client_encoding,
     }
 
     return db.connect(**server_params)
@@ -239,10 +245,10 @@ def verify_email(verification_token):
 # function: send verification email
 def send_verification_email(receiver_mail, verification_token, user_id):
     # Retrieve email configuration from environment variables
-    # email = os.getenv("EMAIL")
-    email = "price.project23@gmail.com"
-    # password = os.getenv("PASSWORD")
-    password = "dkto zovm nnwx csqo"
+    email = os.getenv("EMAIL")
+    # email = "price.project23@gmail.com"
+    password = os.getenv("PASSWORD")
+    # password = "dkto zovm nnwx csqo"
 
     # Construct the email message
     subject = "Please verify your email"
