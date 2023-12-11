@@ -98,16 +98,8 @@
         .jd-tag, .wph-tag {
             display: none;
         }
-
-        .navbar {
-            position: absolute;
-            top: 10px; /* 距离顶部的距离，可以根据需要调整 */
-            right: 10px; /* 距离右侧的距离，可以根据需要调整 */
-        }
-
-/* 其他样式属性，例如背景颜色、边框等 */
-
     </style>
+
 </head>
 <body>
    
@@ -119,8 +111,8 @@
                 <a href="/login">Log In</a>
                 <a href="/register">Register</a>
                 <a href="/profile">Profile</a>
-                <a href="/compare">CompareIt Search (v1)</a>
-                <a href="/comparev2">CompareIt Search (v2)</a>
+                <a href="/compare">Search 1</a>
+                <a href="/comparev2">Search 2</a>
             </div>
         </div>
     </div>
@@ -132,13 +124,6 @@
         </form>
     </div>
 
-    <ul>
-        <!-- <li class="active"><a href="/profile" style="position: absolute; top: 15px; right: 15px; text-decoration: none;">PROFILE</a></li> -->
-    </ul>
-    <!-- 新增搜索输入框和按钮 -->
-    
-    
-    <!-- 六个大问号 -->
     <div class="loading" id="loading">
         <h1 style="font-family: 'Impact', sans-serif;"><span class="compare-text" style="color: white; font-family: 'Impact', sans-serif;">Compare<span style="color: crimson; font-family: 'Impact', sans-serif;">It</span></span></h1>
     </div>
@@ -156,7 +141,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const menu = document.getElementById('myNavbar');
             const searchForm = document.getElementById('searchForm');
             const keywordInput = document.getElementById('keywordInput');
             const productsContainer = document.getElementById('productsContainer');
