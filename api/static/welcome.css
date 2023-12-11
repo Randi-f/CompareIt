@@ -97,16 +97,8 @@ transform: translate(-50%, -50%);
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-background-color: #fff;
-width: 358px;
-height: 150px;
-border-radius: 15px;
-padding: 50px;
-position: relative;
-left: 50%;
-top: 50%;
-transform: translate(-50%, -50%);
 }
+
 /*white box for user profile, compare.html*/
 .info-wrapper {
 background-color: #fff;
