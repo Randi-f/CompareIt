@@ -26,6 +26,7 @@ from pip._vendor.distlib.compat import raw_input
 app = Flask(__name__)
 app.secret_key = "your_unique_and_secret_key"
 
+
 def get_db_connection():
     # config = configparser.ConfigParser()
     # config.read("dbtool.ini")
@@ -38,6 +39,8 @@ def get_db_connection():
         "client_encoding": "utf-8",
     }
     return db.connect(**server_params)
+
+
 # def get_db_connection():
 #     # config = configparser.ConfigParser()
 #     # config.read("dbtool.ini")
@@ -58,7 +61,7 @@ def get_db_connection():
 #     }
 
 #     return db.connect(**server_params)
-    # return db.connect(**config["connection"])
+# return db.connect(**config["connection"])
 
 
 # home page for the app
@@ -334,9 +337,7 @@ def profile():
 # compare page
 @app.route("/compare")
 def compare():
-    result1 = [
-        ["?","?","?","?","?"]
-    ]
+    result1 = [["?", "?", "?", "?", "?"]]
     result2 = [
         ["?", "?", "?", "?", "?"],
         ["?", "?", "?", "?", "?"],
@@ -403,13 +404,16 @@ def send_request_JD(keyword):
 
     ul_list = selector.xpath('//div[@id="J_goodsList"]/ul/li')
     if len(ul_list) == 0:
-
-        ret = [['API network error', 
-                '-', 
-                'please try again later', 
-                'https://img-qn.51miz.com/preview/element/00/01/15/79/E-1157992-2ACF8A1A.jpg!/quality/90/unsharp/true/compress/true/format/jpg/fw/720', 
-                'none', 
-                '-']]
+        ret = [
+            [
+                "API network error",
+                "-",
+                "please try again later",
+                "https://img-qn.51miz.com/preview/element/00/01/15/79/E-1157992-2ACF8A1A.jpg!/quality/90/unsharp/true/compress/true/format/jpg/fw/720",
+                "none",
+                "-",
+            ]
+        ]
         return ret
         products_list.append(
             {
@@ -441,7 +445,14 @@ def send_request_JD(keyword):
         store = li.xpath(
             'div/div[@class="p-shop"]//a/text() | ' 'div//a[@class="curr-shop"]/@title'
         )
-        row = [title[0],store[0],price[0],'https://img-qn.51miz.com/preview/element/00/01/15/79/E-1157992-2ACF8A1A.jpg!/quality/90/unsharp/true/compress/true/format/jpg/fw/720','normal',"https:" + link[0]]
+        row = [
+            title[0],
+            store[0],
+            price[0],
+            "https://img-qn.51miz.com/preview/element/00/01/15/79/E-1157992-2ACF8A1A.jpg!/quality/90/unsharp/true/compress/true/format/jpg/fw/720",
+            "normal",
+            "https:" + link[0],
+        ]
         # products_list.append(
         #     {
         #         "title": title[0],
