@@ -391,16 +391,17 @@ font-size: 70px;
 
 /*navigation menu*/
 .navbar {
-/* position: absolute; */
-/* top: 10px;
-right: 30px; */
+position: absolute;
+top: 10px;
+right: 30px;
 overflow: hidden;
 }
 
 .dropdown {
-/* position: fixed; */
-float: left;
-overflow: hidden;
+position: relative;
+/* float: left; */
+/* overflow: hidden; */
+display: inline-block;
 }
 
 .dropbtn {
