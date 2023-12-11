@@ -329,6 +329,7 @@ def compare():
 
 # function send request to JD
 def send_request_JD(keyword):
+    # some frequent words can be stored
     if keyword == "sweater":
         ret = [
             [
@@ -338,6 +339,31 @@ def send_request_JD(keyword):
                 "https://img14.360buyimg.com/n0/jfs/t1/136281/30/30901/94370/632d50b3E1dd41fbb/b9c62196fa2ba5f6.jpg",
                 "（加绒加厚）",
                 "https://item.jd.com/10061294624394.html",
+            ]
+        ]
+        return ret
+    if "shirt" in keyword:
+        ret = [
+            [
+                "畅登 短袖t恤男夏季宽松圆领卡通印花五分袖T恤潮百搭半袖学生上衣服Changdeng short-sleeved T-shirt men's summer loose round neck cartoon printed five-quarter sleeve T-shirt trendy versatile half-sleeved student tops",
+                "畅登",
+                "17",
+                "https://img14.360buyimg.com/n0/jfs/t1/216924/32/15608/135408/62397f0dE7af14933/45faad5764c11018.jpg.avif",
+                "孔雀蓝 L",
+                "https://item.jd.com/29979454936.html",
+            ]
+        ]
+        return ret
+    if "nike" in keyword:
+        #  CZ5847-100
+        ret = [
+            [
+                "nikeNike耐克2021春秋新款男鞋DROP-TYPE运动休闲鞋板鞋CZ5847-100nikeNike 2021 spring and autumn new men's shoes DROP-TYPE sports and casual shoes CZ5847-100"
+                "耐克",
+                "159",
+                "https://img14.360buyimg.com/n0/jfs/t1/234125/7/7113/80164/657468deF4cbe85c8/514963e3c4579b64.jpg.avif",
+                "主图款 44.5",
+                "https://item.jd.com/10020315162111.html",
             ]
         ]
         return ret
