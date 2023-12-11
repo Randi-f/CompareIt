@@ -1,3 +1,9 @@
+<!--
+ * @Author: shihan
+ * @Date: 2023-12-10 12:45:04
+ * @version: 1.0
+ * @description: 
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,102 +12,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" type="text/css" href="../static/welcome.css" />
-<!-- </head> -->
-    <style>
-        *{
-            padding: 0;
-            margin: 0;
-            /* font-family: "楷体"; */
-        }
-
-        /* header{
-            position: relative;
-            background-image:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url(https://images.pexels.com/photos/1303098/pexels-photo-1303098.jpeg?cs=srgb&dl=pexels-george-dolgikh-1303098.jpg&fm=jpg);
-            height: 100vh;
-            background-size: cover;
-            background-position: center;
-        } */
-   
-        ul{
-            position: absolute;
-            bottom: 40px;
-            left: 47%;
-            list-style-type: none;
-        }
-
-        ul li{
-            display: inline-block;
-        }
-   
-        ul li a{
-            text-decoration: none;
-            color: #fff;
-            padding: 5px 20px;
-            border: 1px solid transparent;
-            transition: .6s ease;
-            border-radius: 20px;
-        }
-   
-        ul li a:hover{
-            background-color: #fff;
-            color: #000;
-        }
-        ul li.active a{
-            background-color: #fff;
-            color: #000;
-        }
-        .title{
-            position: absolute;
-            top:20px;
-            left:50%;
-            transform: translate(-50%);
-        }
-        .title h1{
-            color: #fff;
-            font-size: 30px;
-            /* font-family: Century Gothic; */
-        }
-        /* .container {
-            background-color: #fff;
-            padding: 20px;
-            margin: auto;
-            margin-top: 20px;
-            width: 50%;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            z-index: 1;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 5px 5px;
-            border: 1px solid transparent;
-            transition: .6s ease;
-            border-radius: 20px;
-        } */
-
-        .login-wrapper {
-            text-align: center;
-        }
-    </style>
 
 <body>
-    <!-- <div class="compare-it-header">
-        <h1>Compare<span style="color: crimson;">It</span></h1>
-    </div> -->
-    <!-- <header>
-        <div class="main">
-            <ul>
-                <li class="active"><a href="/">Back</a></li>
-            </ul>
-        </div>
-        <div class="title">
-            <h1>Compare<span style="color: crimson;">It</span></h1>
-        </div>
-    </header> -->
-
     <div class="container">
         <div class="compare-it-header">
-            <h1>Compare<span style="color: lightpink;">It</span></h1>
+            <h1>Compare<span>It</span></h1>
         </div>
         <div class="login-wrapper">
             <div class="header">Login</div>
@@ -133,7 +48,7 @@
                     if (response.ok) {
                         alert(responseData.message); // 显示成功信息
                         // 进行登录成功后的操作，比如页面跳转等
-                        window.location.href = '/compare';
+                        window.location.href = '/comparev2';
                     } else {
                         alert(responseData.message); // 显示错误信息
                         document.getElementById('user_id').value = ''; // 清空用户名和密码字段
@@ -148,7 +63,6 @@
                 <a href="/register">Sign up</a>
             </div>
         </div>
-    </div>
-    
+    </div>  
 </body>
 </html>

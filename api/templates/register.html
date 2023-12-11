@@ -120,9 +120,12 @@ function hideModal() {
 </script>
 <body>
     <div class="container">
-        <div class="login-wrapper2">
-            <div class="header">Create Account</div>
-            <div class="form-wrapper">
+        <div class="compare-it-header">
+            <h1>Compare<span>It</span></h1>
+        </div>
+        <div class="info-wrapper">
+            <div class="header" style="line-height: 30px;">Create Account</div>
+            <div class="form-wrapper" style="top: 0px">
                 <form method="POST" action="/register">
                     First Name:<input type="text" name="first_name" id = "first_name" placeholder="first name" class="input-item">
                     Last Name: <input type="text" name="last_name" id = "last_name" placeholder="last name" class="input-item">
@@ -139,7 +142,7 @@ function hideModal() {
             </div>
             
             <div id="myModal" class="modal">
-                <p id="modalMessage">Modal message goes here</p>
+                <p id="modalMessage">Modal message</p>
                 <span class="close" onclick="hideModal()">&times;</span>
             </div>
         </div>

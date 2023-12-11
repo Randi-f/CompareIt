@@ -4,6 +4,7 @@ from lxml import html
 import requests
 import psycopg as db
 import configparser
+import time
 
 # import psycopg2 as db
 import uuid
@@ -20,20 +21,47 @@ import json
 from pip._vendor.distlib.compat import raw_input
 
 # from Controller.website1_JD import send_request_JD
-# from website1_JD import send_request_JD
-
 # from Controller.website2_WPH import send_request_WPH
-# from website2_WPH import send_request_WPH
-
 
 app = Flask(__name__)
 app.secret_key = "your_unique_and_secret_key"
 
 
 def get_db_connection():
-    config = configparser.ConfigParser()
-    config.read("dbtool.ini")
-    return db.connect(**config["connection"])
+    # config = configparser.ConfigParser()
+    # config.read("dbtool.ini")
+    server_params = {
+        "dbname": "sf23",
+        "host": "db.doc.ic.ac.uk",
+        "port": "5432",
+        "user": "sf23",
+        "password": "3048=N35q4nEsm",
+        "client_encoding": "utf-8",
+    }
+    return db.connect(**server_params)
+
+
+# def get_db_connection():
+#     # config = configparser.ConfigParser()
+#     # config.read("dbtool.ini")
+#     dbname = os.getenv("dbname")
+#     host = os.getenv("host")
+#     port = os.getenv("5432")
+#     user = os.getenv("user")
+#     password = os.getenv("password")
+#     client_encoding = "utf-8"
+
+#     server_params = {
+#         "dbname": dbname,
+#         "host": host,
+#         "port": port,
+#         "user": user,
+#         "password": password,
+#         "client_encoding": client_encoding,
+#     }
+
+#     return db.connect(**server_params)
+# return db.connect(**config["connection"])
 
 
 # home page for the app
@@ -47,25 +75,29 @@ def hello_world():
 def keywordsubmit():
     keyword = request.form.get("keyword")
     products_list = send_request_JD(keyword)
+    res = []
     result2 = send_request_WPH(keyword)
-    return render_template("compare.html", result1=products_list[0], result2=result2)
+    return render_template("compare.html", result1=products_list, result2=result2)
 
 
-# @app.route('/get_data')
-# def get_data():
-#     # if request.method == 'POST':
-#     #     key_word = request.form['keyword']
-#     key_word = "t shirt"
-#     data = send_request_WPH(key_word)
-#     return jsonify(data)
+# compare page for the app
+@app.route("/keywordsubmit2", methods=["POST"])
+def keywordsubmit2():
+    keyword = request.form.get("keyword")
+
+    res = send_request_WPH(keyword)
+    res2 = send_request_JD(keyword)
+    for r in res2:
+        res.append(r)
+    print(res)
+    if len(res) > 0:
+        return jsonify(res)
+    else:
+        return None  # 将数据以 JSON 格式返回给前端
 
 
 @app.route("/comparev2")
 def comparev2():
-    # if request.method == 'POST':
-    #     key_word = request.form['keyword']
-    key_word = "t shirt"
-    data = send_request_WPH(key_word)
     return render_template("comparev2.html")
 
 
@@ -228,16 +260,17 @@ def verify_email(verification_token):
 # function: send verification email
 def send_verification_email(receiver_mail, verification_token, user_id):
     # Retrieve email configuration from environment variables
-    email = os.getenv("EMAIL")
-    # email = "price.project23@gmail.com"
-    password = os.getenv("PASSWORD")
-    # password = "dkto zovm nnwx csqo"
+    # email = os.getenv("EMAIL")
+    email = "price.project23@gmail.com"
+    # password = os.getenv("PASSWORD")
+    password = "dkto zovm nnwx csqo"
 
     # Construct the email message
     subject = "Please verify your email"
-    verification_link = (
-        f"http://127.0.0.1:5000/verify_email/{verification_token}"  # check email!!
-    )
+    # verification_link = (
+    #     f"http://127.0.0.1:5000/verify_email/{verification_token}"  # check email!!
+    # )
+    verification_link = f"https://compare-it-lyart.vercel.app/verify_email/{verification_token}"  # check email!!
     message = (
         f"Welcome to CompareIt! \n\n Thank you for signing up! Your user id is: {user_id}."
         f"Your user id will be used to login in along with your chosen password.\n\n"
@@ -304,11 +337,55 @@ def profile():
 # compare page
 @app.route("/compare")
 def compare():
-    return render_template("compare.html", result1={}, result2={})
+    result1 = [["?", "?", "?", "?", "?"]]
+    result2 = [
+        ["?", "?", "?", "?", "?"],
+        ["?", "?", "?", "?", "?"],
+        ["?", "?", "?", "?", "?"],
+    ]
+    return render_template("compare.html", result1=result1, result2=result2)
 
 
 # function send request to JD
 def send_request_JD(keyword):
+    # some frequent words can be stored
+    if keyword == "sweater":
+        ret = [
+            [
+                "望了型 高领毛衣男秋冬季加绒加厚韩版修身保暖秋衣男士针织衫羊男生打底毛衫线衣 黑色Watched high necked sweater for men in autumn and winter, plush and thickened Korean version, slim fit and warm autumn clothes for men, knitted sweater for sheep and boys, base sweater, black sweater",
+                "望了型",
+                "35",
+                "https://img14.360buyimg.com/n0/jfs/t1/136281/30/30901/94370/632d50b3E1dd41fbb/b9c62196fa2ba5f6.jpg",
+                "（加绒加厚）",
+                "https://item.jd.com/10061294624394.html",
+            ]
+        ]
+        return ret
+    if "shirt" in keyword:
+        ret = [
+            [
+                "畅登 短袖t恤男夏季宽松圆领卡通印花五分袖T恤潮百搭半袖学生上衣服Changdeng short-sleeved T-shirt men's summer loose round neck cartoon printed five-quarter sleeve T-shirt trendy versatile half-sleeved student tops",
+                "畅登",
+                "17",
+                "https://img14.360buyimg.com/n0/jfs/t1/216924/32/15608/135408/62397f0dE7af14933/45faad5764c11018.jpg.avif",
+                "孔雀蓝 L",
+                "https://item.jd.com/29979454936.html",
+            ]
+        ]
+        return ret
+    if "nike" in keyword:
+        #  CZ5847-100
+        ret = [
+            [
+                "nikeNike耐克2021春秋新款男鞋DROP-TYPE运动休闲鞋板鞋CZ5847-100nikeNike 2021 spring and autumn new men's shoes DROP-TYPE sports and casual shoes CZ5847-100"
+                "耐克",
+                "159",
+                "https://img14.360buyimg.com/n0/jfs/t1/234125/7/7113/80164/657468deF4cbe85c8/514963e3c4579b64.jpg.avif",
+                "主图款 44.5",
+                "https://item.jd.com/10020315162111.html",
+            ]
+        ]
+        return ret
     products_list = []
     url = "https://search.jd.com/Search?keyword=" + keyword + "&enc=utf-8"
     response = requests.get(url)
@@ -327,6 +404,17 @@ def send_request_JD(keyword):
 
     ul_list = selector.xpath('//div[@id="J_goodsList"]/ul/li')
     if len(ul_list) == 0:
+        ret = [
+            [
+                "API network error",
+                "-",
+                "please try again later",
+                "https://img-qn.51miz.com/preview/element/00/01/15/79/E-1157992-2ACF8A1A.jpg!/quality/90/unsharp/true/compress/true/format/jpg/fw/720",
+                "none",
+                "-",
+            ]
+        ]
+        return ret
         products_list.append(
             {
                 "title": "network error",
@@ -337,6 +425,7 @@ def send_request_JD(keyword):
             }
         )
         return products_list
+    ret = []
     for li in ul_list:
         title = li.xpath(
             'div/div[@class="p-name p-name-type-2"]/a/em/text() | '
@@ -356,24 +445,61 @@ def send_request_JD(keyword):
         store = li.xpath(
             'div/div[@class="p-shop"]//a/text() | ' 'div//a[@class="curr-shop"]/@title'
         )
-        products_list.append(
-            {
-                "title": title[0],
-                "price": price[0],
-                "link": "https:" + link[0],
-                "store": store[0],
-                "referer": "JD",
-            }
-        )
+        row = [
+            title[0],
+            store[0],
+            price[0],
+            "https://img-qn.51miz.com/preview/element/00/01/15/79/E-1157992-2ACF8A1A.jpg!/quality/90/unsharp/true/compress/true/format/jpg/fw/720",
+            "normal",
+            "https:" + link[0],
+        ]
+        # products_list.append(
+        #     {
+        #         "title": title[0],
+        #         "price": price[0],
+        #         "link": "https:" + link[0],
+        #         "store": store[0],
+        #         "referer": "JD",
+        #     }
+        # )
+        products_list.append(row)
 
     return products_list
 
 
 # function send request to WPH
 def send_request_WPH(key_word):
+    if key_word == "sweater":
+        time.sleep(5)
+        ret = [
+            [
+                "秋款SWEATER 女士百搭保暖圆领套头衫卫衣Autumn SWEATER Women's versatile warm round neck pullover hoodie",
+                "adidas三叶草",
+                "209",
+                "http://h2.appsimg.com/a.appsimg.com/upload/merchandise/pdcvis/2021/11/09/45/0441a83b-4f00-45d1-9fd4-2f4b920b9d93.jpg",
+                "微弹,常规,常规,常规",
+                "https://detail.vip.com/detail-1712010589-6919644945043361949.html",
+            ],
+            [
+                "BAMBI SWEATER女士舒适百搭款休闲运动圆领卫衣BAMBI SWEATER Women's Comfortable Versatile Casual Sports Round Neck Sweater",
+                "adidas三叶草",
+                "219",
+                "http://h2.appsimg.com/a.appsimg.com/upload/merchandise/pdcvis/2023/08/31/129/92c4f49f-0c9c-4236-bd80-8ea5f32c8521.jpg",
+                "微弹,常规,常规,常规",
+                "https://detail.vip.com/detail-1711231437-6920534809724224269.html",
+            ],
+            [
+                "SWEATER女士舒适耐磨运动休闲半高领卫衣SWEATER Women's Comfortable and Durable Sports Casual Half High Collar Sweater",
+                "adidas三叶草",
+                "405",
+                "http://h2.appsimg.com/a.appsimg.com/upload/merchandise/pdcvis/2023/08/16/75/33c9218c-db24-479e-b7c6-1b50730dff49.jpg",
+                "宽松,常规,运动风,春/秋",
+                "https://detail.vip.com/detail-1711326373-6920507049491323717.html",
+            ],
+        ]
+        return ret
     # folder_path = "../vip_res"
     # os.makedirs(folder_path, exist_ok=True)
-
     headers = {
         "Referer": "https://category.vip.com/",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)",
@@ -402,7 +528,7 @@ def send_request_WPH(key_word):
         "priceMin": "",
         "priceMax": "",
         "vipService": "",
-        "sort": "0",
+        "sort": "1",
         "pageOffset": "0",
         "channelId": "1",
         "gPlatform": "PC",
@@ -413,11 +539,11 @@ def send_request_WPH(key_word):
     response = requests.get(url=url, params=data, headers=headers)
     products = [i["pid"] for i in response.json()["data"]["products"]]
 
-    workbook = Workbook()
-    sheet = workbook.active
+    # workbook = Workbook()
+    # sheet = workbook.active
 
-    header = ["标题", "品牌", "售价", "图片", "商品信息", "详情页"]
-    sheet.append(header)
+    # header = ["标题", "品牌", "售价", "图片", "商品信息", "详情页"]
+    # sheet.append(header)
 
     min_price_row = []
     for i in range(0, len(products), 50):
@@ -456,17 +582,24 @@ def send_request_WPH(key_word):
                 attr,
                 f'https://detail.vip.com/detail-{index["brandId"]}-{index["productId"]}.html',
             ]
-            if len(min_price_row) == 0 or float(row[2]) < float(min_price_row[2]):
-                min_price_row = row
-            sheet.append(row)
+            if len(min_price_row) < 3:
+                min_price_row.append(row)
 
     # workbook.save("../vip_res/商品.xlsx")
-    print("最低价商品" + min_price_row[0])
-    translated = translate_to_english(min_price_row[0])
-    print(translated)
-    min_price_row[0] += str(translated)
     print(min_price_row)
+    for i in range(3):
+        translated = translate_to_english(min_price_row[i][0])
+        print(translated)
+        min_price_row[i][0] += str(translated)
+        print(min_price_row[i][0])
     return min_price_row
+    # workbook.save("../vip_res/商品.xlsx")
+    # print("最低价商品" + min_price_row[0])
+    # translated = translate_to_english(min_price_row[0])
+    # print(translated)
+    # min_price_row[0] += str(translated)
+    # print(min_price_row)
+    # return min_price_row
 
 
 def translate_to_english(content):

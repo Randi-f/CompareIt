@@ -1,32 +1,26 @@
 <!--
- * @Description: 
- * @Version: 
- * @Author: fsh
- * @Date: 2023-04-13 18:43:45
-
- * @LastEditTime: 2023-12-08 23:51:19
-
+* @Author: Nicole Audia, Karen Chave, Nikki Luo, Shihan Fu, Xiaotian Zhang
+ * @LastEditTime: 2023-12-11 13:08:09
 -->
 <!DOCTYPE HTML>
 <html>
 <head>
 
-
 <title>CompareIt</title>
 <meta charset="utf-8" />
 <link rel="stylesheet" href="{{ url_for('static',filename='welcome.css') }}">
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-
 
 <style>
-table{width:600px; 
-border-collapse:collapse; 
-text-align:center;
+table{
+    width:600px; 
+    height: 400px;
+    border-collapse:collapse; 
+    text-align:center;
 }
-td,th{border:1px solid #ccc}
-body {
-  font-family: Arial;
-}
+td,th{
+    border: 1px solid black; 
+} 
+
 
 * {
   box-sizing: border-box;
@@ -62,8 +56,7 @@ form.example::after {
   clear: both;
   display: table;
 }
-#myInput {
-    background-image: url('https://static.runoob.com/images/mix/searchicon.png'); /* 搜索按钮 */
+#myInput {    
     background-position: 10px 12px; /* 定位搜索按钮 */
     background-repeat: no-repeat; /* 不重复图片 */
     width: 100%;
@@ -76,7 +69,7 @@ form.example::after {
 #myTable {
     border-collapse: collapse; 
     width: 100%; 
-    border: 1px solid #ddd;
+    border: 1px solid black;
     font-size: 18px; 
 }
  
@@ -94,6 +87,26 @@ form.example::after {
     /* 表头及鼠标移动过 tr 时添加背景 */
     background-color: #f1f1f1;
 }
+
+/* 样式化产品展示 */
+.product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .product {
+            width: calc(33.33% - 10px);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .product img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
 </style>
 <!--引入js文件-->
 <!-- <script src="__JS__/bootstrap.js"></script>
@@ -102,54 +115,91 @@ form.example::after {
 <body>
 <!-- <select id="columnName">
 </select> -->
+<!-- <select id="columnName"> -->
+</select>
+
+<script>
+    
+</script>
+
+<div class="navbar">
+    <div class="dropdown">
+        <button class="dropbtn">Menu ▼</button>
+        <div class="dropdown-content">
+            <a href="/">Home</a>
+            <a href="/login">Log In</a>
+            <a href="/register">Register</a>
+            <a href="/profile">Profile</a>
+            <a href="/compare">Search 1</a>
+            <a href="/comparev2">Search 2</a>
+        </div>
+    </div>
+
 
 <div class="container">
-    <div class="info-wrapper">
-        <!-- <h1>Compare<span style="color: crimson;">It</span></h1> -->
-        <div class="header">Compare It</div>
+    <div class="compare-it-header">
+        <h1>Compare<span>It</span></h1>
+    </div>
+    <!-- <ul>
+        <li class="active"><a href="/profile">GO TO PROFILE</a></li>
+    </ul> -->
+    <div class="info-wrapper" style="overflow: auto;" style="width: 800px;">
+        <div class="header">CompareIt Search</div>
         <div class="form-wrapper">
-            <button onclick="window.location.href='/profile'"> profile </button>
+
+            <!-- <button onclick="window.location.href='/profile'"> profile </button> -->
+            <!-- <button onclick="window.location.href='/comparev2'"> search on WPH </button> -->
             <form action="/keywordsubmit" method="post">               
                 <!-- keyword:<input type="text" name="keyword" id = "keyword" placeholder="keyword" class="input-item"> -->
-                keyword:<input type="text" name="keyword" id = "keyword" placeholder="keyword" class="fa fa-search">
-                <button type="submit">
-                    <img src="https://static.runoob.com/images/mix/searchicon.png" width="12" alt="图片">
-                </button>
+                Search:<input type="text" name="keyword" id = "keyword" placeholder="keyword" class="fa fa-search">
+                <button type="submit" class="btn">Search</button>
             </form>
 
         </div>
         <div class="table-container">
             <table border="1">
                 <tr>
-                    <th>Item</th>
-                    <th>Link</th>
-                    <th>Price</th>
-                    <th>Manufacturer</th>
-                    <th>Market</th>
+                    <th style="width: 600px;">Item</th>
+                    <th style="width: 150px;">Link</th>
+                    <th style="width: 70px;">Price</th>
+                    <th style="width: 150px;">Manufacturer</th>
+                    <th style="width: 100px;">Market</th>
                 </tr>
                 
                 <tr>
-                    <td>{{ result1['title'] }}</td>
-                    <td>{{ result1['link'] }}</td>
-                    <td>{{ result1['price'] }}</td>
-                    <td>{{ result1['manufacturer'] }}</td>
-                    <td>JD</td>
+                    <td style="width: 600px;">{{ result2[0][0] }}</td>
+                    <td style="width: 150px;">{{ result2[0][5] }}</td>
+                    <td style="width: 50px;">{{ result2[0][2] }}</td>
+                    <td>{{ result2[0][1] }}</td>
+                    <td>WPH</td>
                 </tr>
                 <tr>
-                    <td>{{ result2[0] }}</td>
-                    <td>{{ result2[5] }}</td>
-                    <td>{{ result2[2] }}</td>
-                    <td>{{ result2[1] }}</td>
+                    <td style="width: 300px;">{{ result2[1][0] }}</td>
+                    <td style="width: 150px;">{{ result2[1][5] }}</td>
+                    <td style="width: 50px;">{{ result2[1][2] }}</td>
+                    <td>{{ result2[1][1] }}</td>
                     <td>WPH</td>
+                </tr>
+                <tr>
+                    <td style="width: 300px;">{{ result2[2][0] }}</td>
+                    <td style="width: 150px;">{{ result2[2][5] }}</td>
+                    <td style="width: 50px;">{{ result2[2][2] }}</td>
+                    <td>{{ result2[2][1] }}</td>
+                    <td>WPH</td>
+                </tr>
+                <tr>
+                    <td style="width: 600px;">{{ result1[0][0] }}</td>
+                    <td style="width: 150px;">{{ result1[0][5] }}</td>
+                    <td style="width: 50px;">{{ result1[0][2] }}</td>
+                    <td style="width: 100px;">{{ result1[0][1] }}</td>
+                    <td style="width: 100px;">JD</td>
                 </tr>
 
                 
             </table>
         </div>
-
-    </div>
+     </div>
 </div>
-
 
 
 
@@ -162,7 +212,61 @@ form.example::after {
   
 <!-- </form> -->
 <script>
-    
+    document.addEventListener('DOMContentLoaded', () => {
+            fetch('/get_data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'keyword=nike运动鞋', // Updated key name to match Flask
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const products = data.map(item => {
+                    return {
+                        image: item[3],
+                        title: item[0],
+                        price: item[2],
+                        link: item[5]
+                    };
+                });
+
+                const productsContainer = document.getElementById('productsContainer');
+                products.forEach(product => {
+                    const productItem = document.createElement('div');
+                    productItem.classList.add('product');
+
+                    const imageElement = document.createElement('img');
+                    imageElement.src = product.image;
+                    imageElement.alt = product.title;
+                    productItem.appendChild(imageElement);
+
+                    const titleElement = document.createElement('h3');
+                    titleElement.textContent = product.title;
+                    productItem.appendChild(titleElement);
+
+                    const priceElement = document.createElement('p');
+                    priceElement.textContent = `价格：${product.price}`;
+                    productItem.appendChild(priceElement);
+
+                    const linkElement = document.createElement('a');
+                    linkElement.href = product.link;
+                    linkElement.textContent = '查看详情';
+                    productItem.appendChild(linkElement);
+
+                    productsContainer.appendChild(productItem);
+                });
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        });
+
     function searchByKeywords(){
         
     // 声明变量
