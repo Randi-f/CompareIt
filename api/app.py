@@ -56,7 +56,7 @@ def keywordsubmit():
     products_list = send_request_JD(keyword)
     res = []
     result2 = send_request_WPH(keyword)
-    return render_template("compare.html", result1=products_list[0], result2=result2)
+    return render_template("compare.html", result1=products_list, result2=result2)
 
 
 # compare page for the app
@@ -316,12 +316,15 @@ def profile():
 # compare page
 @app.route("/compare")
 def compare():
+    result1 = [
+        ["?","?","?","?","?"]
+    ]
     result2 = [
         ["?", "?", "?", "?", "?"],
         ["?", "?", "?", "?", "?"],
         ["?", "?", "?", "?", "?"],
     ]
-    return render_template("compare.html", result1={}, result2=result2)
+    return render_template("compare.html", result1=result1, result2=result2)
 
 
 # function send request to JD
@@ -374,6 +377,7 @@ def send_request_JD(keyword):
             }
         )
         return products_list
+    ret = []
     for li in ul_list:
         title = li.xpath(
             'div/div[@class="p-name p-name-type-2"]/a/em/text() | '
@@ -393,15 +397,17 @@ def send_request_JD(keyword):
         store = li.xpath(
             'div/div[@class="p-shop"]//a/text() | ' 'div//a[@class="curr-shop"]/@title'
         )
-        products_list.append(
-            {
-                "title": title[0],
-                "price": price[0],
-                "link": "https:" + link[0],
-                "store": store[0],
-                "referer": "JD",
-            }
-        )
+        row = [title[0],store[0],price[0],'https://img-qn.51miz.com/preview/element/00/01/15/79/E-1157992-2ACF8A1A.jpg!/quality/90/unsharp/true/compress/true/format/jpg/fw/720','normal',"https:" + link[0]]
+        # products_list.append(
+        #     {
+        #         "title": title[0],
+        #         "price": price[0],
+        #         "link": "https:" + link[0],
+        #         "store": store[0],
+        #         "referer": "JD",
+        #     }
+        # )
+        products_list.append(row)
 
     return products_list
 

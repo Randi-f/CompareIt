@@ -1,6 +1,6 @@
 <!--
     * @Author: Nicole Audia, Karen Chave, Nikki Luo, Shihan Fu, Xiaotian Zhang
-    * @LastEditTime: 2023-12-10 21:57:08
+ * @LastEditTime: 2023-12-11 12:04:10
 -->
 <!DOCTYPE HTML>
 <html>
@@ -168,10 +168,10 @@ form.example::after {
                     <td>WPH</td>
                 </tr>
                 <tr>
-                    <td style="width: 600px;">{{ result1['title'] }}</td>
-                    <td style="width: 150px;">{{ result1['link'] }}</td>
-                    <td style="width: 50px;">{{ result1['price'] }}</td>
-                    <td style="width: 100px;">{{ result1['manufacturer'] }}</td>
+                    <td style="width: 600px;">{{ result1[0][0] }}</td>
+                    <td style="width: 150px;">{{ result1[0][5] }}</td>
+                    <td style="width: 50px;">{{ result1[0][2] }}</td>
+                    <td style="width: 100px;">{{ result1[0][1] }}</td>
                     <td style="width: 100px;">JD</td>
                 </tr>
 
