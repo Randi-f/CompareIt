@@ -1,6 +1,6 @@
 <!--
-    * @Author: Nicole Audia, Karen Chave, Nikki Luo, Shihan Fu, Xiaotian Zhang
- * @LastEditTime: 2023-12-11 12:04:10
+* @Author: Nicole Audia, Karen Chave, Nikki Luo, Shihan Fu, Xiaotian Zhang
+ * @LastEditTime: 2023-12-11 13:08:09
 -->
 <!DOCTYPE HTML>
 <html>
@@ -87,6 +87,26 @@ form.example::after {
     /* 表头及鼠标移动过 tr 时添加背景 */
     background-color: #f1f1f1;
 }
+
+/* 样式化产品展示 */
+.product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .product {
+            width: calc(33.33% - 10px);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .product img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
 </style>
 <!--引入js文件-->
 <!-- <script src="__JS__/bootstrap.js"></script>
@@ -192,7 +212,61 @@ form.example::after {
   
 <!-- </form> -->
 <script>
-    
+    document.addEventListener('DOMContentLoaded', () => {
+            fetch('/get_data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'keyword=nike运动鞋', // Updated key name to match Flask
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const products = data.map(item => {
+                    return {
+                        image: item[3],
+                        title: item[0],
+                        price: item[2],
+                        link: item[5]
+                    };
+                });
+
+                const productsContainer = document.getElementById('productsContainer');
+                products.forEach(product => {
+                    const productItem = document.createElement('div');
+                    productItem.classList.add('product');
+
+                    const imageElement = document.createElement('img');
+                    imageElement.src = product.image;
+                    imageElement.alt = product.title;
+                    productItem.appendChild(imageElement);
+
+                    const titleElement = document.createElement('h3');
+                    titleElement.textContent = product.title;
+                    productItem.appendChild(titleElement);
+
+                    const priceElement = document.createElement('p');
+                    priceElement.textContent = `价格：${product.price}`;
+                    productItem.appendChild(priceElement);
+
+                    const linkElement = document.createElement('a');
+                    linkElement.href = product.link;
+                    linkElement.textContent = '查看详情';
+                    productItem.appendChild(linkElement);
+
+                    productsContainer.appendChild(productItem);
+                });
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        });
+
     function searchByKeywords(){
         
     // 声明变量
